@@ -10,7 +10,7 @@ import model.AlbumImage;
 public class AlbumImageDAO {
     // Create a new album image in the database
     public void createAlbumImage(AlbumImage albumImage) {
-        String sql = "INSERT INTO album_image (album_id, image_id) VALUES (?, ?)";
+        String sql = "INSERT INTO album_images (album_id, image_id) VALUES (?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, albumImage.getAlbum_id());
@@ -24,7 +24,7 @@ public class AlbumImageDAO {
     // Retrieve a list of album images by album ID
     public List<AlbumImage> getAlbumImagesByAlbumId(int albumId) {
         List<AlbumImage> albumImages = new ArrayList<>();
-        String sql = "SELECT * FROM album_image WHERE album_id = ?";
+        String sql = "SELECT * FROM album_images WHERE album_id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, albumId);
@@ -43,7 +43,7 @@ public class AlbumImageDAO {
     // Retrieve a list of album images by image ID
     public List<AlbumImage> getAlbumImagesByImageId(int imageId) {
         List<AlbumImage> albumImages = new ArrayList<>();
-        String sql = "SELECT * FROM album_image WHERE image_id = ?";
+        String sql = "SELECT * FROM album_images WHERE image_id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, imageId);
@@ -61,7 +61,7 @@ public class AlbumImageDAO {
 
     // Delete album images by album ID
     public void deleteAlbumImagesByAlbumId(int albumId) {
-        String sql = "DELETE FROM album_image WHERE album_id = ?";
+        String sql = "DELETE FROM album_images WHERE album_id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, albumId);
@@ -73,7 +73,7 @@ public class AlbumImageDAO {
 
     // Delete album images by image ID
     public void deleteAlbumImagesByImageId(int imageId) {
-        String sql = "DELETE FROM album_image WHERE image_id = ?";
+        String sql = "DELETE FROM album_images WHERE image_id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, imageId);

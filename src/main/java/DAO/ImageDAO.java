@@ -7,7 +7,7 @@ import dbContext.ConnectDB;
 import model.Image;
 public class ImageDAO {
     public void createImage(Image image) {
-        String sql = "INSERT INTO image (user_id, title, file_path, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO images (user_id, title, file_path, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, image.getUser_id());
@@ -24,7 +24,7 @@ public class ImageDAO {
     }
     // Retrieve an image by its ID
     public Image getImageById(int id) {
-        String sql = "SELECT * FROM image WHERE id = ?";
+        String sql = "SELECT * FROM images WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -41,7 +41,7 @@ public class ImageDAO {
 
     // Update an image's information
     public void updateImage(Image image) {
-        String sql = "UPDATE image SET title = ?, file_path = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
+        String sql = "UPDATE images SET title = ?, file_path = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, image.getTitle());
@@ -58,7 +58,7 @@ public class ImageDAO {
 
     // Delete an image from the database
     public void deleteImage(int id) {
-        String sql = "DELETE FROM image WHERE id = ?";
+        String sql = "DELETE FROM images WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -71,7 +71,7 @@ public class ImageDAO {
     // Get a list of all images in the database
     public List<Image> getAllImages() {
         List<Image> images = new ArrayList<>();
-        String sql = "SELECT * FROM image";
+        String sql = "SELECT * FROM images";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {

@@ -9,7 +9,7 @@ import model.Album;
 public class AlbumDAO {
     // Create a new album in the database
     public void createAlbum(Album album) {
-        String sql = "INSERT INTO album (user_id, title, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO albums (user_id, title, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, album.getUser_id());
@@ -26,7 +26,7 @@ public class AlbumDAO {
 
     // Retrieve an album by its ID
     public Album getAlbumById(int id) {
-        String sql = "SELECT * FROM album WHERE id = ?";
+        String sql = "SELECT * FROM albums WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -43,7 +43,7 @@ public class AlbumDAO {
 
     // Update an album's information
     public void updateAlbum(Album album) {
-        String sql = "UPDATE album SET title = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
+        String sql = "UPDATE albums SET title = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, album.getTitle());
@@ -59,7 +59,7 @@ public class AlbumDAO {
 
     // Delete an album from the database
     public void deleteAlbum(int id) {
-        String sql = "DELETE FROM album WHERE id = ?";
+        String sql = "DELETE FROM albums WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -72,7 +72,7 @@ public class AlbumDAO {
     // Get a list of all albums in the database
     public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
-        String sql = "SELECT * FROM album";
+        String sql = "SELECT * FROM albums";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
