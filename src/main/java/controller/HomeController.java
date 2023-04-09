@@ -2,7 +2,9 @@ package controller;
 
 import DAO.AlbumDAO;
 import DAO.ImageDAO;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,10 +15,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+@WebServlet("/")
 public class HomeController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
         try {
             ImageDAO imageDAO = new ImageDAO();
             AlbumDAO albumDAO = new AlbumDAO();
@@ -25,7 +27,8 @@ public class HomeController extends HttpServlet {
             System.out.println("images: " + images);
             request.setAttribute("images", images);
             request.setAttribute("albums", albums);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
