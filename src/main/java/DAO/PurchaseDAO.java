@@ -7,7 +7,7 @@ import dbContext.ConnectDB;
 import model.Purchase;
 public class PurchaseDAO {
     public void createPurchase(Purchase purchase) {
-        String sql = "INSERT INTO purchase (user_id, image_id, album_id, created_at) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO purchases (user_id, image_id, album_id, created_at) VALUES (?, ?, ?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, purchase.getUser_id());
@@ -21,7 +21,7 @@ public class PurchaseDAO {
     }
     // Retrieve a purchase by its ID
     public Purchase getPurchaseById(int id) {
-        String sql = "SELECT * FROM purchase WHERE id = ?";
+        String sql = "SELECT * FROM purchases WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -39,7 +39,7 @@ public class PurchaseDAO {
     // Retrieve a list of purchases by user ID
     public List<Purchase> getPurchasesByUserId(int userId) {
         List<Purchase> purchases = new ArrayList<>();
-        String sql = "SELECT * FROM purchase WHERE user_id = ?";
+        String sql = "SELECT * FROM purchases WHERE user_id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
@@ -57,7 +57,7 @@ public class PurchaseDAO {
 
     // Delete a purchase from the database
     public void deletePurchase(int id) {
-        String sql = "DELETE FROM purchase WHERE id = ?";
+        String sql = "DELETE FROM purchases WHERE id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -70,7 +70,7 @@ public class PurchaseDAO {
     // Get a list of all purchases in the database
     public List<Purchase> getAllPurchases() {
         List<Purchase> purchases = new ArrayList<>();
-        String sql = "SELECT * FROM purchase";
+        String sql = "SELECT * FROM purchases";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {

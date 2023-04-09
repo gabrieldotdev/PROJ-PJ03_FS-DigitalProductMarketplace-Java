@@ -10,6 +10,10 @@ public class Purchase {
     private Date created_at;
 
     // Constructor
+
+    public Purchase() {
+    }
+
     public Purchase(int id, int user_id, int image_id, int album_id, Date created_at) {
         this.id = id;
         this.user_id = user_id;
