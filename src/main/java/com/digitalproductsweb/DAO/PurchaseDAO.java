@@ -1,10 +1,10 @@
-package DAO;
+package com.digitalproductsweb.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import dbContext.ConnectDB;
-import model.Purchase;
+import com.digitalproductsweb.dbContext.ConnectDB;
+import com.digitalproductsweb.model.Purchase;
 public class PurchaseDAO {
     public void createPurchase(Purchase purchase) {
         String sql = "INSERT INTO purchases (user_id, image_id, album_id, created_at) VALUES (?, ?, ?, ?)";

@@ -1,22 +1,23 @@
-package controller;
+package com.digitalproductsweb.controller;
 
-import DAO.AlbumDAO;
-import DAO.ImageDAO;
+import com.digitalproductsweb.DAO.AlbumDAO;
+import com.digitalproductsweb.DAO.ImageDAO;
+import com.digitalproductsweb.model.Image;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Album;
-import model.Image;
+import com.digitalproductsweb.model.Album;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet("/")
 public class HomeController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         try {
@@ -24,7 +25,6 @@ public class HomeController extends HttpServlet {
             AlbumDAO albumDAO = new AlbumDAO();
             List<Image> images = imageDAO.getAllImages();
             List<Album> albums = albumDAO.getAllAlbums();
-            System.out.println("images: " + images);
             request.setAttribute("images", images);
             request.setAttribute("albums", albums);
             RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
@@ -33,4 +33,5 @@ public class HomeController extends HttpServlet {
             e.printStackTrace();
         }
     }
+
 }

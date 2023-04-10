@@ -1,11 +1,11 @@
-package DAO;
+package com.digitalproductsweb.DAO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import dbContext.ConnectDB;
-import model.User;
+import com.digitalproductsweb.dbContext.ConnectDB;
+import com.digitalproductsweb.model.User;
 
 public class UserDAO {
 

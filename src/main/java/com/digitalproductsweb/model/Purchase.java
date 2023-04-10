@@ -1,4 +1,4 @@
-package model;
+package com.digitalproductsweb.model;
 
 import java.sql.Date;
 

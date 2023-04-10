@@ -1,7 +1,7 @@
-package controller;
+package com.digitalproductsweb.controller;
 
-import DAO.ImageDAO;
-import model.Image;
+import com.digitalproductsweb.DAO.ImageDAO;
+import com.digitalproductsweb.model.Image;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

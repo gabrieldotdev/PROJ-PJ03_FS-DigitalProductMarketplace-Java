@@ -1,10 +1,11 @@
-package DAO;
+package com.digitalproductsweb.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import dbContext.ConnectDB;
-import model.Image;
+import com.digitalproductsweb.dbContext.ConnectDB;
+import com.digitalproductsweb.model.Image;
+
 public class ImageDAO {
     public void createImage(Image image) {
         String sql = "INSERT INTO images (user_id, title, file_path, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -88,14 +89,14 @@ public class ImageDAO {
     // Map a ResultSet to an Image object
     private Image mapResultSetToImage(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        int userId = rs.getInt("user_id");
+        int user_id = rs.getInt("user_id");
         String title = rs.getString("title");
-        String filePath = rs.getString("file_path");
+        String file_path = rs.getString("file_path");
         String description = rs.getString("description");
         double price = rs.getDouble("price");
-        Date createdAt = rs.getDate("created_at");
-        Date updatedAt = rs.getDate("updated_at");
-        return new Image(id, userId, title, filePath, description, price, createdAt, updatedAt);
+        Date created_at = rs.getDate("created_at");
+        Date updated_at = rs.getDate("updated_at");
+        return new Image(id, user_id, title, file_path, description, price, created_at, updated_at);
     }
 
 }

@@ -1,24 +1,45 @@
-package model;
+package com.digitalproductsweb.model;
 
 import java.sql.Date;
 
-public class Album {
+public class Image {
     private int id;
     private int user_id;
     private String title;
+    private String file_path;
     private String description;
     private double price;
     private Date created_at;
     private Date updated_at;
 
     // Constructor
-    public Album(int id, int user_id, String title, String description, double price, Date created_at, Date updated_at) {
+    public Image(int id, int user_id, String title, String file_path, String description, double price, Date created_at, Date updated_at) {
         this.id = id;
         this.user_id = user_id;
         this.title = title;
+        this.file_path = file_path;
         this.description = description;
         this.price = price;
         this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public Image(int user_id, String title, String file_path, String description, double price, Date created_at, Date updated_at) {
+        this.user_id = user_id;
+        this.title = title;
+        this.file_path = file_path;
+        this.description = description;
+        this.price = price;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public Image(int id, String title, String file_path, String description, double price, Date updated_at) {
+        this.id = id;
+        this.title = title;
+        this.file_path = file_path;
+        this.description = description;
+        this.price = price;
         this.updated_at = updated_at;
     }
 
@@ -44,6 +65,14 @@ public class Album {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getFile_path() {
+        return file_path;
+    }
+
+    public void setFile_path(String file_path) {
+        this.file_path = file_path;
     }
 
     public String getDescription() {
@@ -80,10 +109,11 @@ public class Album {
 
     @Override
     public String toString() {
-        return "Album{" +
+        return "Image{" +
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", title='" + title + '\'' +
+                ", file_path='" + file_path + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", created_at=" + created_at +

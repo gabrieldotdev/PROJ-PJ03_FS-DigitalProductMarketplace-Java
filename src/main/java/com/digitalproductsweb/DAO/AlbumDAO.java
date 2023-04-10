@@ -1,10 +1,10 @@
-package DAO;
+package com.digitalproductsweb.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import dbContext.ConnectDB;
-import model.Album;
+import com.digitalproductsweb.dbContext.ConnectDB;
+import com.digitalproductsweb.model.Album;
 
 public class AlbumDAO {
     // Create a new album in the database

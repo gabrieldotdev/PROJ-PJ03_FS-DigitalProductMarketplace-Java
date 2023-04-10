@@ -1,4 +1,4 @@
-package dbContext;
+package com.digitalproductsweb.dbContext;
 
 public interface DatabaseInfor {
     public static String driverName = "com.mysql.cj.jdbc.Driver";

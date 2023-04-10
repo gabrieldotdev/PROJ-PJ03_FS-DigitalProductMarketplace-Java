@@ -1,4 +1,4 @@
-package dbContext;
+package com.digitalproductsweb.dbContext;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
