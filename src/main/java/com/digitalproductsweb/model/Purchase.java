@@ -22,6 +22,13 @@ public class Purchase {
         this.created_at = created_at;
     }
 
+    public Purchase(int user_id, int image_id, int album_id, Date created_at) {
+        this.user_id = user_id;
+        this.image_id = image_id;
+        this.album_id = album_id;
+        this.created_at = created_at;
+    }
+
     public int getId() {
         return id;
     }

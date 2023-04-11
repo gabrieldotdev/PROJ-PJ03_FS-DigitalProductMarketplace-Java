@@ -91,6 +91,42 @@ public class UserDAO {
         return users;
     }
 
+    // Check if a user exists in the database
+    public boolean userExists(String username, String email) {
+        String sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    // Check user login credentials
+    public boolean checkLogin(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     // Map a ResultSet to a User object
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");

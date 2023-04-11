@@ -12,6 +12,8 @@ public class User {
     private Date created_at;
     private Date updated_at;
 
+    public User() {
+    }
     public User(String username, String email, String password, String phone, String location, Date created_at, Date updated_at) {
         this.username = username;
         this.email = email;
