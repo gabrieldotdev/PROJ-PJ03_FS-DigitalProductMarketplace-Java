@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.digitalproductsweb.dbContext.ConnectDB;
 import com.digitalproductsweb.model.Album;
+import com.digitalproductsweb.model.Image;
 
 public class AlbumDAO {
     // Create a new album in the database
@@ -84,6 +85,46 @@ public class AlbumDAO {
             throw new RuntimeException(e);
         }
         return albums;
+    }
+
+    public List<Integer> getAlbumImageIds() throws SQLException {
+        List<Integer> albumImageIds = new ArrayList<>();
+        String sql = "SELECT image_id FROM album_images";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("image_id");
+                albumImageIds.add(id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return albumImageIds;
+    }
+
+    // Get album cover image
+    public Image getAlbumCoverImage(int albumId) throws SQLException{
+        Image albumCoverImage  = null;
+        String sql = "SELECT i.* FROM images i INNER JOIN album_images ai ON i.id = ai.image_id WHERE ai.album_id = ? LIMIT 1";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, albumId);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                int user_id = resultSet.getInt("user_id");
+                String title = resultSet.getString("title");
+                String file_path = resultSet.getString("file_path");
+                String description = resultSet.getString("description");
+                double price = resultSet.getDouble("price");
+                Date created_at = resultSet.getDate("created_at");
+                Date updated_at = resultSet.getDate("updated_at");
+                albumCoverImage = new Image(albumId, user_id, title, file_path, description, price, created_at, updated_at);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return albumCoverImage ;
     }
 
     // Map a ResultSet to an Album object

@@ -91,13 +91,12 @@ public class UserDAO {
         return users;
     }
 
-    // Check if a user exists in the database
-    public boolean userExists(String username, String email) {
-        String sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+    // Check if username is already taken
+    public boolean usernameExists(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, username);
-            stmt.setString(2, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return true;
@@ -109,13 +108,12 @@ public class UserDAO {
         return false;
     }
 
-    // Check user login credentials
-    public boolean checkLogin(String username, String password) {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+    // Check if email is already taken
+    public boolean emailExists(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+            stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return true;
@@ -125,6 +123,24 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    // Check user and return user data
+    public User login(User user) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToUser(rs);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     // Map a ResultSet to a User object
@@ -135,8 +151,9 @@ public class UserDAO {
         String password = rs.getString("password");
         String phone = rs.getString("phone");
         String location = rs.getString("location");
+        Boolean is_admin = rs.getBoolean("isAdmin");
         Date created_at = rs.getDate("created_at");
         Date updated_at = rs.getDate("updated_at");
-        return new User(id, username, email, password, phone, location, created_at, updated_at);
+        return new User(id, username, email, password, phone, location, is_admin, created_at, updated_at);
     }
 }

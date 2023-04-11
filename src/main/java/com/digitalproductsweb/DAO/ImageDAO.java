@@ -98,6 +98,39 @@ public class ImageDAO {
         }
     }
 
+    public List<Image> getImagesNotInAlbum() throws SQLException {
+        List<Image> images = new ArrayList<>();
+        String sql = "SELECT * FROM images WHERE id NOT IN (SELECT image_id FROM album_images)";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Image image = mapResultSetToImage(rs);
+                images.add(image);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return images;
+    }
+
+    public List<Image> getImagesByAlbumId(int albumId) throws SQLException {
+        List<Image> images = new ArrayList<>();
+        try (Connection conn = ConnectDB.getInstance().openConnection()) {
+            String query = "SELECT * FROM images JOIN album_images ON images.id = album_images.image_id WHERE album_images.album_id = ?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, albumId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Image image = mapResultSetToImage(rs);
+                images.add(image);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return images;
+    }
+
 
     // Map a ResultSet to an Image object
     private Image mapResultSetToImage(ResultSet rs) throws SQLException {

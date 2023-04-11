@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String password;
     private String phone;
+    private boolean isAdmin;
     private String location;
     private Date created_at;
     private Date updated_at;
@@ -24,13 +25,14 @@ public class User {
         this.updated_at = updated_at;
     }
 
-    public User(int id, String username, String email, String password, String phone, String location, Date created_at, Date updated_at) {
+    public User(int id, String username, String email, String password, String phone, String location,Boolean isAdmin , Date created_at, Date updated_at) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.location = location;
+        this.isAdmin = isAdmin;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -99,6 +101,14 @@ public class User {
         this.updated_at = updated_at;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -107,6 +117,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
+                ", isAdmin=" + isAdmin +
                 ", location='" + location + '\'' +
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +

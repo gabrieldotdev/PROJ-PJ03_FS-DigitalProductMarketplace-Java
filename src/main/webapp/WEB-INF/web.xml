@@ -11,11 +11,75 @@
         <servlet-name>homeController</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description/>
+        <display-name>Login</display-name>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.LoginController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <description/>
+        <display-name>Register</display-name>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <description/>
+        <display-name>Image</display-name>
+        <servlet-name>Image</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.ImageController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Image</servlet-name>
+        <url-pattern>/admin/image-list</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <description/>
+        <display-name>ViewImage</display-name>
+        <servlet-name>ViewImage</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.ViewImage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewImage</servlet-name>
+        <url-pattern>/view/image</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <description/>
+        <display-name>viewAlbum</display-name>
+        <servlet-name>viewAlbum</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.ViewAlbum</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewAlbum</servlet-name>
+        <url-pattern>/view/album</url-pattern>
+    </servlet-mapping>
+
+
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>com.digitalproductsweb.Filter.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
     <welcome-file-list>
         <welcome-file>home.jsp</welcome-file>
     </welcome-file-list>

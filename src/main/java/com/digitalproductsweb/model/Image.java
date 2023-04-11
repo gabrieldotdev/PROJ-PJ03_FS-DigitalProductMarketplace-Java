@@ -36,6 +36,14 @@ public class Image {
         this.updated_at = updated_at;
     }
 
+    public Image(int user_id, String title, String file_path, String description, double price) {
+        this.user_id = user_id;
+        this.title = title;
+        this.file_path = file_path;
+        this.description = description;
+        this.price = price;
+    }
+
     public Image(int id, String title, String file_path, String description, double price, Date updated_at) {
         this.id = id;
         this.title = title;
@@ -44,7 +52,6 @@ public class Image {
         this.price = price;
         this.updated_at = updated_at;
     }
-
     public int getId() {
         return id;
     }

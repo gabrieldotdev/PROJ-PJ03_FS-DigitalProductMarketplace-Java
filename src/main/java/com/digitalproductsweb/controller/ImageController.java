@@ -2,42 +2,31 @@ package com.digitalproductsweb.controller;
 
 import com.digitalproductsweb.DAO.ImageDAO;
 import com.digitalproductsweb.model.Image;
+
+import com.digitalproductsweb.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ImageController extends HttpServlet {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImageController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ImageController at " +
-                    request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+
+    private ImageDAO imageDAO;
+
+    public void init() {
+        imageDAO = new ImageDAO();
     }
 
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String theCommand = request.getParameter("command");
-            if (theCommand == null) {
-                theCommand = "LIST";
-            }
-            switch (theCommand) {
+            switch (theCommand != null ? theCommand : "LIST") {
                 case "ADD":
                     addImage(request, response);
                     break;
@@ -53,67 +42,63 @@ public class ImageController extends HttpServlet {
                 case "LIST":
                 default:
                     listImage(request, response);
+                    break;
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new ServletException(ex);
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            processRequest(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-
-    private void listImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ImageDAO imageDAO = new ImageDAO();
-        List<Image> images = imageDAO.getAllImages();
+    private void listImage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        List<Image> images = imageDAO.getImagesNotInAlbum();
         request.setAttribute("images", images);
-        request.getRequestDispatcher("images.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/image-list.jsp").forward(request, response);
     }
-    private void addImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        String title = request.getParameter("title");
-        String file_path = request.getParameter("file_path");
-        String description = request.getParameter("description");
-        double price = Double.parseDouble(request.getParameter("price"));
-        Date createdAt = new Date(System.currentTimeMillis());
-        Date updatedAt = new Date(System.currentTimeMillis());
-        Image image = new Image(user_id, title, file_path, description, price, createdAt, updatedAt);
-        ImageDAO imageDAO = new ImageDAO();
+
+    private void addImage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+        int user_id = ((User) session.getAttribute("user")).getId();
+        Image image = new Image(
+                user_id,
+                request.getParameter("title"),
+                request.getParameter("file_path"),
+                request.getParameter("description"),
+                Double.parseDouble(request.getParameter("price"))
+        );
         imageDAO.createImage(image);
         listImage(request, response);
     }
 
-    private void getById(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int id = Integer.parseInt(request.getParameter("id"));
-        ImageDAO imageDAO = new ImageDAO();
-        Image image = imageDAO.getImageById(id);
-        request.setAttribute("image", image);
-        request.getRequestDispatcher("update-image.jsp").forward(request, response);
+    private void getById(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        Image image = imageDAO.getImageById(Integer.parseInt(request.getParameter("id")));
+        request.setAttribute("id", image.getId());
+        request.setAttribute("title", image.getTitle());
+        request.setAttribute("file_path", image.getFile_path());
+        request.setAttribute("description", image.getDescription());
+        request.setAttribute("price", image.getPrice());
+        request.getRequestDispatcher("/admin/image-edit.jsp").forward(request, response);
     }
 
-    private void updateImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String title = request.getParameter("title");
-        String file_path = request.getParameter("file_path");
-        String description = request.getParameter("description");
-        double price = Double.parseDouble(request.getParameter("price"));
-        Date updatedAt = new Date(System.currentTimeMillis());
-        Image image = new Image(id, title, file_path, description, price, updatedAt);
-        ImageDAO imageDAO = new ImageDAO();
+    private void updateImage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        Date updated_at = new Date(System.currentTimeMillis());
+        Image image = new Image(
+                Integer.parseInt(request.getParameter("id")),
+                request.getParameter("title"),
+                request.getParameter("file_path"),
+                request.getParameter("description"),
+                Double.parseDouble(request.getParameter("price")),
+                updated_at
+        );
         imageDAO.updateImage(image);
         listImage(request, response);
     }
 
-    private void deleteImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int id = Integer.parseInt(request.getParameter("id"));
-        ImageDAO imageDAO = new ImageDAO();
-        imageDAO.deleteImage(id);
+    private void deleteImage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        imageDAO.deleteImage(Integer.parseInt(request.getParameter("id")));
         listImage(request, response);
     }
 }
