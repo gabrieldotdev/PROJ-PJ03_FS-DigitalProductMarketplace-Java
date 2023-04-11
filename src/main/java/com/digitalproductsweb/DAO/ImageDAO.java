@@ -86,6 +86,19 @@ public class ImageDAO {
         return images;
     }
 
+    // Delete all images with a given album ID
+    public void deleteImagesByAlbumId(int albumId) {
+        String sql = "DELETE FROM images WHERE id IN (SELECT image_id FROM album_images WHERE album_id = ?)";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, albumId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     // Map a ResultSet to an Image object
     private Image mapResultSetToImage(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");

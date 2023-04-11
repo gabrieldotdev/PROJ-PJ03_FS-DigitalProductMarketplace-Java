@@ -89,12 +89,12 @@ public class AlbumDAO {
     // Map a ResultSet to an Album object
     private Album mapResultSetToAlbum(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        int userId = rs.getInt("user_id");
+        int user_id = rs.getInt("user_id");
         String title = rs.getString("title");
         String description = rs.getString("description");
         double price = rs.getDouble("price");
         Date created_at = rs.getDate("created_at");
         Date updated_at = rs.getDate("updated_at");
-        return new Album(id, userId, title, description, price, created_at, updated_at);
+        return new Album(id, user_id, title, description, price, created_at, updated_at);
     }
 }

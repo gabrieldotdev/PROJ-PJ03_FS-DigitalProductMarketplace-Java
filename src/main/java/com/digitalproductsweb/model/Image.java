@@ -13,6 +13,8 @@ public class Image {
     private Date updated_at;
 
     // Constructor
+    public Image() {
+    }
     public Image(int id, int user_id, String title, String file_path, String description, double price, Date created_at, Date updated_at) {
         this.id = id;
         this.user_id = user_id;

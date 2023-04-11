@@ -22,6 +22,19 @@ public class Album {
         this.updated_at = updated_at;
     }
 
+    public Album(int user_id, String title, String description, double price, Date created_at, Date updated_at) {
+        this.user_id = user_id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+
+    }
+
+    public Album() {
+    }
+
     public int getId() {
         return id;
     }
