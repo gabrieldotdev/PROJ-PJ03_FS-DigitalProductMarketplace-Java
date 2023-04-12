@@ -27,6 +27,10 @@ public class ImageUserController extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("/login");
+            return;
+        }
         action = action == null ? "" : action;
         switch (action) {
             case "create":
@@ -54,7 +58,13 @@ public class ImageUserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String action = request.getParameter("action");
+        // check user logged
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
         action = action == null ? "" : action;
         switch (action) {
             case "create":

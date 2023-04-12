@@ -19,7 +19,8 @@
             <button id="sidebar-toggle" type="menu" class="mr-4 hidden cursor-pointer lg:flex">
                 <lord-icon src="https://cdn.lordicon.com/ofwpzftr.json" trigger="hover" class="h-6 w-6"></lord-icon>
             </button>
-            <a class="text-md mr-3 flex-none font-bold leading-6 text-indigo-500 md:w-auto" href="<c:url value="/"/>"> Lil Wxs |
+            <a class="text-md mr-3 flex-none font-bold leading-6 text-indigo-500 md:w-auto" href="<c:url value="/"/>">
+                Lil Wxs |
                 Blogs </a>
             <!-- discoverDropdown -->
             <div class="relative">
@@ -132,21 +133,21 @@
                 <%
                     if (user != null) {
                 %>
-                <form action="logout" method="POST">
-                    <div class="ml-2 flex items-center border-l border-slate-200">
-                        <div class="relative" data-headlessui-state="">
-                            <button type="button"
-                                    class="ml-4 mr-2 flex items-center text-slate-400 hover:text-slate-500">
-                                <lord-icon src="https://cdn.lordicon.com/bhfjfgqz.json" trigger="hover"
-                                           class="h-6 w-6"></lord-icon>
-                            </button>
-                        </div>
+                <div class="ml-2 flex items-center border-l border-slate-200">
+                    <div class="relative" data-headlessui-state="">
+                        <a href="<c:url value="/profile?id=${user.getId()}"/>"
+                                class="ml-4 mr-2 flex items-center text-slate-400 hover:text-slate-500">
+                            <lord-icon src="https://cdn.lordicon.com/bhfjfgqz.json" trigger="hover"
+                                       class="h-6 w-6"></lord-icon>
+                        </a>
+                    </div>
+                    <form action="logout" method="POST">
                         <button type="submit" class="flex items-center">
                             <lord-icon src="https://cdn.lordicon.com/bewubbww.json" trigger="hover"
                                        class="h-6 w-6"></lord-icon>
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
                 <%
                 } else {
                 %>

@@ -17,7 +17,7 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
-    <title>Title</title>
+    <title>Xem hình ảnh</title>
 </head>
 <body class="bg-slate-50 antialiased">
 <div class="container flex max-w-none flex-col">
@@ -66,7 +66,7 @@
                                     </button>
 
                                     <div class="flex flex-col">
-                                        <p class="text-xl font-bold text-indigo-400">${image.user.username}</p>
+                                        <a href="<c:url value="/profile?id=${image.user.id}"/>"><p class="text-xl font-bold text-indigo-400">${image.user.username}</p></a>
                                         <p class="text-md text-slate-500">${image.user.email}</p>
                                     </div>
                                 </div>
