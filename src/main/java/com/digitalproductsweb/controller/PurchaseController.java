@@ -32,6 +32,8 @@ public class PurchaseController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int productCount = 0;
+        double totalPrice = 0.0;
         User user = (User) request.getSession().getAttribute("user");
 
         if (user == null) {
@@ -42,6 +44,14 @@ public class PurchaseController extends HttpServlet {
         List<Purchase> purchases = purchaseDAO.getPurchasesByUserId(userId);
         List<Image> albumCoverImages = new ArrayList<>();
         for (Purchase purchase : purchases) {
+            if (purchase.getImage() != null) {
+                productCount++;
+                totalPrice += purchase.getImage().getPrice();
+            }
+            if (purchase.getAlbum() != null) {
+                productCount++;
+                totalPrice += purchase.getAlbum().getPrice();
+            }
             Image albumCoverImage = null;
             try {
                 albumCoverImage = albumDAO.getAlbumCoverImage(purchase.getAlbum().getId());
@@ -50,6 +60,8 @@ public class PurchaseController extends HttpServlet {
             }
             albumCoverImages.add(albumCoverImage);
         }
+        request.setAttribute("productCount", productCount);
+        request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("purchases", purchases);
         request.setAttribute("albumCoverImages", albumCoverImages);
         request.getRequestDispatcher("/purchase.jsp").forward(request, response);

@@ -19,7 +19,7 @@
             <button id="sidebar-toggle" type="menu" class="mr-4 hidden cursor-pointer lg:flex">
                 <lord-icon src="https://cdn.lordicon.com/ofwpzftr.json" trigger="hover" class="h-6 w-6"></lord-icon>
             </button>
-            <a class="text-md mr-3 flex-none font-bold leading-6 text-indigo-500 md:w-auto" href="/"> Lil Wxs |
+            <a class="text-md mr-3 flex-none font-bold leading-6 text-indigo-500 md:w-auto" href="<c:url value="/"/>"> Lil Wxs |
                 Blogs </a>
             <!-- discoverDropdown -->
             <div class="relative">
@@ -41,7 +41,7 @@
                                     <!-- SVG -->
                                 </div>
                                 <div>
-                                    <a href="#" class="font-semibold text-gray-900">
+                                    <a href="<c:url value="/"/>" class="font-semibold text-gray-900">
                                         Chế độ sáng
                                         <span class="absolute inset-0"></span>
                                     </a>
@@ -62,7 +62,7 @@
                                 </svg>
                                 Xem tất cả
                             </a>
-                            <a href="#"
+                            <a href="<c:url value="/"/>"
                                class="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="h-5 w-5 flex-none text-gray-500">

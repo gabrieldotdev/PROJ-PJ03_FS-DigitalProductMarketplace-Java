@@ -37,7 +37,6 @@ public class ImageDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Image image = mapResultSetToImage(rs);
-                    image.setUser(mapResultSetToUser(rs));
                     return image;
                 }
             }
@@ -85,7 +84,6 @@ public class ImageDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Image image = mapResultSetToImage(rs);
-                image.setUser(mapResultSetToUser(rs));
                 images.add(image);
             }
         } catch (Exception e) {
@@ -115,7 +113,6 @@ public class ImageDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Image image = mapResultSetToImage(rs);
-                image.setUser(mapResultSetToUser(rs));
                 images.add(image);
             }
         } catch (Exception e) {
@@ -134,7 +131,6 @@ public class ImageDAO {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Image image = mapResultSetToImage(rs);
-                image.setUser(mapResultSetToUser(rs));
                 images.add(image);
             }
         } catch (Exception e) {
@@ -152,7 +148,6 @@ public class ImageDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Image image = mapResultSetToImage(rs);
-                    image.setUser(mapResultSetToUser(rs));
                     images.add(image);
                 }
             }
@@ -162,6 +157,22 @@ public class ImageDAO {
         return images;
     }
 
+
+    public List<Image> getRandom10Images() {
+        List<Image> images = new ArrayList<>();
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN users u ON i.user_id = u.id ORDER BY RAND() LIMIT 10";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Image image = mapResultSetToImage(rs);
+                images.add(image);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return images;
+    }
 
     // Map a ResultSet to an Image object
     private Image mapResultSetToImage(ResultSet rs) throws SQLException {
@@ -173,13 +184,7 @@ public class ImageDAO {
         double price = rs.getDouble("price");
         Date created_at = rs.getDate("created_at");
         Date updated_at = rs.getDate("updated_at");
-        return new Image(id, new User(user_id), title, file_path, description, price, created_at, updated_at);
-    }
-
-    // Map a ResultSet to a User object
-    private User mapResultSetToUser(ResultSet rs) throws SQLException {
-        int id = rs.getInt("user_id");
-        String username = rs.getString("username");
-        return new User(id, username);
+        UserDAO userDAO = new UserDAO();
+        return new Image(id, userDAO.getUserById(user_id), title, file_path, description, price, created_at, updated_at);
     }
 }
