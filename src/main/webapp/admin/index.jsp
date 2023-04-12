@@ -21,13 +21,13 @@
                     <section class="flex flex-col gap-4 rounded-xl bg-white p-5">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h2 class="text-xl font-bold text-indigo-500 md:text-2xl">Start your free trial</h2>
-                                <p class="text-gray-600">No Credit Card required</p>
+                                <h2 class="text-xl font-bold text-indigo-500 md:text-2xl">Quản lý hệ thống</h2>
+                                <p class="text-gray-600">Chào bạn một ngày mới thật tươi vui!</p>
                             </div>
                             <div class="flex gap-x-6">
-                                <button id="list-image" class="inline-block text-sm font-semibold hover:text-indigo-400 md:text-base">Quản lý ảnh</button>
-                                <button id="list-album" class="inline-block text-sm font-semibold hover:text-indigo-400 md:text-base">Quản lý album</button>
-                                <button id="list-user" class="inline-block text-sm font-semibold hover:text-indigo-400 md:text-base">Quản lý người dùng</button>
+                                <button id="list-image" class="inline-block text-sm font-semibold hover:text-indigo-400 md:text-base">Photo</button>
+                                <button id="list-album" class="inline-block text-sm font-semibold hover:text-indigo-400 md:text-base">Ablum</button>
+                                <button id="list-user" class="inline-block text-sm font-semibold hover:text-indigo-400 md:text-base">User</button>
                             </div>
                         </div>
 
@@ -60,7 +60,7 @@
                             </figure>
                         </div>
                         <!-- IMAGE - END -->
-                        <!-- IMAGE -->
+                        <!-- ALBUM -->
                         <div id="album" class="columns-3xs gap-4">
                             <figure v-for="image in images" class="py-2 [break-inside:avoid]">
                                 <div class="group relative overflow-hidden rounded-xl">
@@ -88,8 +88,8 @@
                                 </div>
                             </figure>
                         </div>
-                        <!-- IMAGE - END -->
-                        <!-- TABLE -->
+                        <!-- ALBUM - END -->
+                        <!-- USER -->
                         <div id="user" class="shadow-xs w-full overflow-hidden rounded-xl">
                             <div class="w-full overflow-x-auto">
                                 <table class="w-full table-auto">
@@ -183,7 +183,7 @@
                                         </span>
                             </div>
                         </div>
-                        <!-- TABLE - END -->
+                        <!-- USER - END -->
 
                         <div class="flex items-start justify-between gap-8 sm:items-center">
                             <p class="max-w-screen-sm text-sm text-gray-500 lg:text-base">
@@ -207,43 +207,42 @@
 <script>
     $(document).ready(function () {
         const $image = $('#image');
-        const $album = $('#album');
         const $user = $('#user');
+        const $album = $('#album');
         const $listImage = $('#list-image');
-        const $listAlbum = $('#list-album');
         const $listUser = $('#list-user');
+        const $listAlbum = $('#list-album');
 
-        $album.removeClass('hidden');
-        $user.removeClass('hidden');
+        $image.removeClass('hidden');
 
         $listImage.click(function () {
-            $image.addClass('hidden');
-            $album.removeClass('hidden');
-            $user.removeClass('hidden');
-            $listImage.removeClass('text-indigo-400 active');
-            $listAlbum.addClass('text-indigo-400 active');
-            $listUser.addClass('text-indigo-400 active');
-        });
-
-        $listAlbum.click(function () {
-            $album.addClass('hidden');
             $image.removeClass('hidden');
-            $user.removeClass('hidden');
-            $listAlbum.removeClass('text-indigo-400 active');
+            $user.addClass('hidden');
+            $album.addClass('hidden');
             $listImage.addClass('text-indigo-400 active');
-            $listUser.addClass('text-indigo-400 active');
+            $listUser.removeClass('text-indigo-400 active');
+            $listAlbum.removeClass('text-indigo-400 active');
         });
 
         $listUser.click(function () {
-            $user.addClass('hidden');
-            $image.removeClass('hidden');
-            $album.removeClass('hidden');
-            $listUser.removeClass('text-indigo-400 active');
-            $listImage.addClass('text-indigo-400 active');
-            $listAlbum.addClass('text-indigo-400 active');
+            $user.removeClass('hidden');
+            $image.addClass('hidden');
+            $album.addClass('hidden');
+            $listUser.addClass('text-indigo-400 active');
+            $listImage.removeClass('text-indigo-400 active');
+            $listAlbum.removeClass('text-indigo-400 active');
         });
 
-        $listImage.click(); // tự động active vào mục "LIST TABLE"
+        $listAlbum.click(function () {
+            $album.removeClass('hidden');
+            $user.add('hidden');
+            $image.addClass('hidden');
+            $listAlbum.addClass('text-indigo-400 active');
+            $listUser.removeClass('text-indigo-400 active');
+            $listImage.removeClass('text-indigo-400 active');
+        });
+
+        $listUser.click(); // tự động active vào mục "LIST TABLE"
     });
 </script>
 <script>
