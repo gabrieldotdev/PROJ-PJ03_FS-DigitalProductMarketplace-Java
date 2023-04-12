@@ -100,12 +100,12 @@
                     <ul class="flex items-center space-x-4">
                         <li>
                             <a class="flex items-center gap-2 hover:text-indigo-500" href="#">
-                                <lord-icon src="https://cdn.lordicon.com/tyvtvbcy.json" trigger="hover"
+                                <lord-icon src="https://cdn.lordicon.com/tyvtvbcy.json" trigger="loop"
                                            class="h-6 w-6"></lord-icon>
-                                Welcome <%
+                                Chào mừng <%
                                 if (user != null) {
                             %>
-                                <%=user.getUsername()%>
+                                <%=user.getUsername()%>, cùng khám phá theo cách của bạn!
                                 <%
                                 } else {
                                 %>
