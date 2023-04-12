@@ -4,17 +4,19 @@ import java.sql.Date;
 
 public class Album {
     private int id;
-    private int user_id;
+    private User user;
     private String title;
     private String description;
     private double price;
     private Date created_at;
     private Date updated_at;
 
-    // Constructor
-    public Album(int id, int user_id, String title, String description, double price, Date created_at, Date updated_at) {
+    // Constructors
+    public Album() {}
+
+    public Album(int id, User user, String title, String description, double price, Date created_at, Date updated_at) {
         this.id = id;
-        this.user_id = user_id;
+        this.user = user;
         this.title = title;
         this.description = description;
         this.price = price;
@@ -22,19 +24,17 @@ public class Album {
         this.updated_at = updated_at;
     }
 
-    public Album(int user_id, String title, String description, double price, Date created_at, Date updated_at) {
-        this.user_id = user_id;
+    public Album(User user, String title, String description, double price, Date created_at, Date updated_at) {
+        this.user = user;
         this.title = title;
         this.description = description;
         this.price = price;
         this.created_at = created_at;
         this.updated_at = updated_at;
-
     }
 
-    public Album() {
-    }
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -43,12 +43,12 @@ public class Album {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTitle() {
@@ -95,7 +95,7 @@ public class Album {
     public String toString() {
         return "Album{" +
                 "id=" + id +
-                ", user_id=" + user_id +
+                ", user=" + user +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +

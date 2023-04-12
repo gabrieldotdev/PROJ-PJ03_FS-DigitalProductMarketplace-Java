@@ -4,31 +4,30 @@ import java.sql.Date;
 
 public class Purchase {
     private int id;
-    private int user_id;
-    private int image_id;
-    private int album_id;
+    private User user;
+    private Image image;
+    private Album album;
     private Date created_at;
 
-    // Constructor
+    // Constructors
+    public Purchase() {}
 
-    public Purchase() {
-    }
-
-    public Purchase(int id, int user_id, int image_id, int album_id, Date created_at) {
+    public Purchase(int id, User user, Image image, Album album, Date created_at) {
         this.id = id;
-        this.user_id = user_id;
-        this.image_id = image_id;
-        this.album_id = album_id;
+        this.user = user;
+        this.image = image;
+        this.album = album;
         this.created_at = created_at;
     }
 
-    public Purchase(int user_id, int image_id, int album_id, Date created_at) {
-        this.user_id = user_id;
-        this.image_id = image_id;
-        this.album_id = album_id;
+    public Purchase(User user, Image image, Album album, Date created_at) {
+        this.user = user;
+        this.image = image;
+        this.album = album;
         this.created_at = created_at;
     }
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -37,28 +36,28 @@ public class Purchase {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getImage_id() {
-        return image_id;
+    public Image getImage() {
+        return image;
     }
 
-    public void setImage_id(int image_id) {
-        this.image_id = image_id;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public int getAlbum_id() {
-        return album_id;
+    public Album getAlbum() {
+        return album;
     }
 
-    public void setAlbum_id(int album_id) {
-        this.album_id = album_id;
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     public Date getCreated_at() {
@@ -73,9 +72,9 @@ public class Purchase {
     public String toString() {
         return "Purchase{" +
                 "id=" + id +
-                ", user_id=" + user_id +
-                ", image_id=" + image_id +
-                ", album_id=" + album_id +
+                ", user=" + user +
+                ", image=" + image +
+                ", album=" + album +
                 ", created_at=" + created_at +
                 '}';
     }

@@ -1,4 +1,5 @@
 package com.digitalproductsweb.DAO;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +7,7 @@ import java.util.List;
 import com.digitalproductsweb.dbContext.ConnectDB;
 import com.digitalproductsweb.model.Album;
 import com.digitalproductsweb.model.Image;
+import com.digitalproductsweb.model.User;
 
 public class AlbumDAO {
     // Create a new album in the database
@@ -13,7 +15,7 @@ public class AlbumDAO {
         String sql = "INSERT INTO albums (user_id, title, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, album.getUser_id());
+            stmt.setInt(1, album.getUser().getId());
             stmt.setString(2, album.getTitle());
             stmt.setString(3, album.getDescription());
             stmt.setDouble(4, album.getPrice());
@@ -102,7 +104,6 @@ public class AlbumDAO {
         }
         return albumImageIds;
     }
-
     // Get album cover image
     public Image getAlbumCoverImage(int albumId) throws SQLException{
         Image albumCoverImage  = null;
@@ -112,30 +113,35 @@ public class AlbumDAO {
             stmt.setInt(1, albumId);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 int user_id = resultSet.getInt("user_id");
                 String title = resultSet.getString("title");
-                String file_path = resultSet.getString("file_path");
+                String filePath = resultSet.getString("file_path");
                 String description = resultSet.getString("description");
                 double price = resultSet.getDouble("price");
                 Date created_at = resultSet.getDate("created_at");
                 Date updated_at = resultSet.getDate("updated_at");
-                albumCoverImage = new Image(albumId, user_id, title, file_path, description, price, created_at, updated_at);
+                User user = new User();
+                user.setId(user_id);
+                albumCoverImage = new Image(id, user, title, filePath, description, price, created_at, updated_at);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return albumCoverImage ;
+        return albumCoverImage;
     }
+
 
     // Map a ResultSet to an Album object
     private Album mapResultSetToAlbum(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        int user_id = rs.getInt("user_id");
+        User user = new User();
+        user.setId(rs.getInt("user_id"));
         String title = rs.getString("title");
         String description = rs.getString("description");
         double price = rs.getDouble("price");
         Date created_at = rs.getDate("created_at");
         Date updated_at = rs.getDate("updated_at");
-        return new Album(id, user_id, title, description, price, created_at, updated_at);
+        return new Album(id, user, title, description, price, created_at, updated_at);
     }
 }

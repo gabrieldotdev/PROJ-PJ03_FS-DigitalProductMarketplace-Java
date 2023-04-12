@@ -1,94 +1,57 @@
 package com.digitalproductsweb.controller;
 
+import com.digitalproductsweb.DAO.AlbumDAO;
+import com.digitalproductsweb.DAO.ImageDAO;
 import com.digitalproductsweb.DAO.PurchaseDAO;
+import com.digitalproductsweb.model.Album;
+import com.digitalproductsweb.model.Image;
 import com.digitalproductsweb.model.Purchase;
+import com.digitalproductsweb.model.User;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+@WebServlet(name = "Purchase", value = "/Purchase")
 public class PurchaseController extends HttpServlet {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PurchaseController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PurchaseController at " +
-                    request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    private PurchaseDAO purchaseDAO;
+    private AlbumDAO albumDAO;
+
+    public void init() {
+        purchaseDAO = new PurchaseDAO();
+        albumDAO = new AlbumDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String theCommand = request.getParameter("command");
-            if (theCommand == null) {
-                theCommand = "LIST";
-            }
-            switch (theCommand) {
-                case "ADD":
-                    addPurchase(request, response);
-                    break;
-                case "LOAD":
-                    getById(request, response);
-                    break;
-                case "DELETE":
-                    deletePurchase(request, response);
-                    break;
-                case "LIST":
-                default:
-                    listPurchase(request, response);
-            }
-        } catch (Exception ex) {
-            throw new ServletException(ex);
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "login.jsp");
+            return;
         }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-
-    public String getServletInfo() {
-        return "Short description";
-    }
-
-    private void listPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PurchaseDAO purchaseDAO = new PurchaseDAO();
-        request.setAttribute("LIST_PURCHASE", purchaseDAO.getAllPurchases());
-        request.getRequestDispatcher("/purchase-list.jsp").forward(request, response);
-    }
-    private void addPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        int image_id = Integer.parseInt(request.getParameter("image_id"));
-        int album_id = Integer.parseInt(request.getParameter("album_id"));
-        Date created_at = new Date(System.currentTimeMillis());
-        Purchase purchase = new Purchase(user_id, image_id, album_id, created_at);
-        PurchaseDAO purchaseDAO = new PurchaseDAO();
-        purchaseDAO.createPurchase(purchase);
-        listPurchase(request, response);
-    }
-
-    private void getById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        PurchaseDAO purchaseDAO = new PurchaseDAO();
-        request.setAttribute("PURCHASE", purchaseDAO.getPurchaseById(id));
-        request.getRequestDispatcher("/purchase-form.jsp").forward(request, response);
-    }
-
-    private void deletePurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        PurchaseDAO purchaseDAO = new PurchaseDAO();
-        purchaseDAO.deletePurchase(id);
-        listPurchase(request, response);
+        int userId = user.getId();
+        List<Purchase> purchases = purchaseDAO.getPurchasesByUserId(userId);
+        List<Image> albumCoverImages = new ArrayList<>();
+        for (Purchase purchase : purchases) {
+            Image albumCoverImage = null;
+            try {
+                albumCoverImage = albumDAO.getAlbumCoverImage(purchase.getAlbum().getId());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            albumCoverImages.add(albumCoverImage);
+        }
+        request.setAttribute("purchases", purchases);
+        request.setAttribute("albumCoverImages", albumCoverImages);
+        request.getRequestDispatcher("/purchase.jsp").forward(request, response);
     }
 }

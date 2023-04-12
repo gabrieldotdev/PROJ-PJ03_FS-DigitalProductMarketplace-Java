@@ -66,6 +66,27 @@
         <url-pattern>/view/album</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <description/>
+        <display-name>purchase</display-name>
+        <servlet-name>purchase</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.PurchaseController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>purchase</servlet-name>
+        <url-pattern>/purchase</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <description/>
+        <display-name>imageUserController</display-name>
+        <servlet-name>imageUserController</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.user.ImageUserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>imageUserController</servlet-name>
+        <url-pattern>/user/images</url-pattern>
+    </servlet-mapping>
 
     <session-config>
         <session-timeout>

@@ -26,7 +26,7 @@
             <td>${image.title}</td>
             <td>${image.price}</td>
             <td>${image.description}</td>
-            <td><img src="${image.file_path}" height="100" /></td>
+            <td><img src="${image.filePath}" height="100" /></td>
             <td>
                 <c:url var="editLink" value="/admin/image-list">
                     <c:param name="command" value="LOAD"/>

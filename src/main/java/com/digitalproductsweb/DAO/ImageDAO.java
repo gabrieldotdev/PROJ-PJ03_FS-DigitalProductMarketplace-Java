@@ -1,37 +1,44 @@
 package com.digitalproductsweb.DAO;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.digitalproductsweb.dbContext.ConnectDB;
 import com.digitalproductsweb.model.Image;
+import com.digitalproductsweb.model.User;
 
 public class ImageDAO {
+
+    // Create a new image in the database
     public void createImage(Image image) {
         String sql = "INSERT INTO images (user_id, title, file_path, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, image.getUser_id());
+            stmt.setInt(1, image.getUser().getId());
             stmt.setString(2, image.getTitle());
-            stmt.setString(3, image.getFile_path());
+            stmt.setString(3, image.getFilePath());
             stmt.setString(4, image.getDescription());
             stmt.setDouble(5, image.getPrice());
-            stmt.setDate(6, new java.sql.Date(image.getCreated_at().getTime()));
-            stmt.setDate(7, new java.sql.Date(image.getUpdated_at().getTime()));
+            stmt.setDate(6, new java.sql.Date(image.getCreatedAt().getTime()));
+            stmt.setDate(7, new java.sql.Date(image.getUpdatedAt().getTime()));
             stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
     // Retrieve an image by its ID
     public Image getImageById(int id) {
-        String sql = "SELECT * FROM images WHERE id = ?";
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN users u ON i.user_id = u.id WHERE i.id = ?";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return mapResultSetToImage(rs);
+                    Image image = mapResultSetToImage(rs);
+                    image.setUser(mapResultSetToUser(rs));
+                    return image;
                 }
             }
         } catch (Exception e) {
@@ -46,10 +53,10 @@ public class ImageDAO {
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, image.getTitle());
-            stmt.setString(2, image.getFile_path());
+            stmt.setString(2, image.getFilePath());
             stmt.setString(3, image.getDescription());
             stmt.setDouble(4, image.getPrice());
-            stmt.setDate(5, new java.sql.Date(image.getUpdated_at().getTime()));
+            stmt.setDate(5, new java.sql.Date(image.getUpdatedAt().getTime()));
             stmt.setInt(6, image.getId());
             stmt.executeUpdate();
         } catch (Exception e) {
@@ -72,12 +79,13 @@ public class ImageDAO {
     // Get a list of all images in the database
     public List<Image> getAllImages() {
         List<Image> images = new ArrayList<>();
-        String sql = "SELECT * FROM images";
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN users u ON i.user_id = u.id";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Image image = mapResultSetToImage(rs);
+                image.setUser(mapResultSetToUser(rs));
                 images.add(image);
             }
         } catch (Exception e) {
@@ -86,7 +94,7 @@ public class ImageDAO {
         return images;
     }
 
-    // Delete all images with a given album ID
+    // Delete all images with a given album
     public void deleteImagesByAlbumId(int albumId) {
         String sql = "DELETE FROM images WHERE id IN (SELECT image_id FROM album_images WHERE album_id = ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
@@ -98,14 +106,16 @@ public class ImageDAO {
         }
     }
 
+    // Get a list of all images not assigned to any album
     public List<Image> getImagesNotInAlbum() throws SQLException {
         List<Image> images = new ArrayList<>();
-        String sql = "SELECT * FROM images WHERE id NOT IN (SELECT image_id FROM album_images)";
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN users u ON i.user_id = u.id WHERE i.id NOT IN (SELECT image_id FROM album_images)";
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Image image = mapResultSetToImage(rs);
+                image.setUser(mapResultSetToUser(rs));
                 images.add(image);
             }
         } catch (Exception e) {
@@ -114,16 +124,37 @@ public class ImageDAO {
         return images;
     }
 
+    // Get a list of all images assigned to a specific album
     public List<Image> getImagesByAlbumId(int albumId) throws SQLException {
         List<Image> images = new ArrayList<>();
-        try (Connection conn = ConnectDB.getInstance().openConnection()) {
-            String query = "SELECT * FROM images JOIN album_images ON images.id = album_images.image_id WHERE album_images.album_id = ?";
-            PreparedStatement statement = conn.prepareStatement(query);
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN album_images ai ON i.id = ai.image_id INNER JOIN users u ON i.user_id = u.id WHERE ai.album_id = ?";
+        try (Connection conn = ConnectDB.getInstance().openConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, albumId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Image image = mapResultSetToImage(rs);
+                image.setUser(mapResultSetToUser(rs));
                 images.add(image);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return images;
+    }
+
+    public List<Image> getImagesByUserId(int userId) {
+        List<Image> images = new ArrayList<>();
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN users u ON i.user_id = u.id WHERE i.user_id = ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Image image = mapResultSetToImage(rs);
+                    image.setUser(mapResultSetToUser(rs));
+                    images.add(image);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -142,7 +173,13 @@ public class ImageDAO {
         double price = rs.getDouble("price");
         Date created_at = rs.getDate("created_at");
         Date updated_at = rs.getDate("updated_at");
-        return new Image(id, user_id, title, file_path, description, price, created_at, updated_at);
+        return new Image(id, new User(user_id), title, file_path, description, price, created_at, updated_at);
     }
 
+    // Map a ResultSet to a User object
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        int id = rs.getInt("user_id");
+        String username = rs.getString("username");
+        return new User(id, username);
+    }
 }

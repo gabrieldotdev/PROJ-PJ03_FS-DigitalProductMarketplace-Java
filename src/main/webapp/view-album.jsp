@@ -11,7 +11,7 @@
 <h2>Images</h2>
 <c:forEach var="image" items="${images}">
   <div>
-    <img src="${image.file_path}" height="100"/>
+    <img src="${image.filePath}" height="100"/>
     <p>${image.title}</p>
   </div>
 </c:forEach>

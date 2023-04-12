@@ -31,7 +31,7 @@ public class LoginController extends HttpServlet {
             session.setAttribute("user", user1);
             resp.sendRedirect("/");
         } else {
-            resp.sendRedirect("login.jsp?error=Invalid login credentials");
+            resp.sendRedirect("login?error=Invalid login credentials");
         }
     }
 }
