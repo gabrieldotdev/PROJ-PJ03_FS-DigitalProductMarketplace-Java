@@ -1,6 +1,9 @@
 package com.digitalproductsweb.controller;
 
+import com.digitalproductsweb.DAO.AlbumDAO;
 import com.digitalproductsweb.DAO.ImageDAO;
+import com.digitalproductsweb.DAO.UserDAO;
+import com.digitalproductsweb.model.Album;
 import com.digitalproductsweb.model.Image;
 import com.digitalproductsweb.model.User;
 
@@ -13,19 +16,25 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ImageController extends HttpServlet {
+public class AdminController extends HttpServlet {
 
     private ImageDAO imageDAO;
+    private AlbumDAO albumDAO;
+    private UserDAO userDAO;
 
     public void init() {
         imageDAO = new ImageDAO();
+        albumDAO = new AlbumDAO();
+        userDAO = new UserDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String command = request.getParameter("command");
+            command = command == null ? "" : command;
             switch (command) {
                 case "add":
                     addImage(request, response);
@@ -40,7 +49,7 @@ public class ImageController extends HttpServlet {
                     deleteImage(request, response);
                     break;
                 default:
-                    listImages(request, response);
+                    listData(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -52,10 +61,22 @@ public class ImageController extends HttpServlet {
         doGet(request, response);
     }
 
-    private void listImages(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        List<Image> images = imageDAO.getAllImages();
+    private void listData(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        List<Image> images = imageDAO.getImagesNotInAlbum();
+        List<Album> albums = albumDAO.getAllAlbums();
+        List<User> users = userDAO.getAllUsers();
+
+        // Get first image from each album and add it to a new list
+        List<Image> albumCoverImages = new ArrayList<>();
+        for (Album album : albums) {
+            Image albumCoverImage = albumDAO.getAlbumCoverImage(album.getId());
+            albumCoverImages.add(albumCoverImage);
+        }
         request.setAttribute("images", images);
-        request.getRequestDispatcher("/admin/image-list.jsp").forward(request, response);
+        request.setAttribute("albums", albums);
+        request.setAttribute("users", users);
+        request.setAttribute("albumsCoverImages", albumCoverImages);
+        request.getRequestDispatcher("/admin/index.jsp").forward(request, response);
     }
 
     private void addImage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -73,7 +94,7 @@ public class ImageController extends HttpServlet {
         );
 
         imageDAO.createImage(image);
-        listImages(request, response);
+        listData(request, response);
     }
 
     private void getImageById(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -99,12 +120,14 @@ public class ImageController extends HttpServlet {
         );
 
         imageDAO.updateImage(image, true);
-        listImages(request, response);
+        listData(request, response);
     }
 
     private void deleteImage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println(id);
         imageDAO.deleteImage(id);
-        listImages(request, response);
+        listData(request, response);
     }
+
 }

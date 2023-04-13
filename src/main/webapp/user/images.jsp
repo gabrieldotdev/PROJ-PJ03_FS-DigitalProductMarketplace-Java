@@ -22,7 +22,7 @@
                 <h2 class="text-xl font-bold text-indigo-500 md:text-2xl">Quản lý ảnh</h2>
                 <p class="text-gray-600"></p>
               </div>
-              <a href="#">
+              <a href="<c:url value="/user/images?action=create"/>">
                 <lord-icon src="https://cdn.lordicon.com/nhfyhmlt.json" trigger="loop" class="h-6 w-6"> </lord-icon>
               </a>
             </div>

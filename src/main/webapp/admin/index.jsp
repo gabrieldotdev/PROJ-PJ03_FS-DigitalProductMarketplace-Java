@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,6 @@
     <script src="https://unpkg.com/scrollreveal"></script>
     <title>Image Gallery</title>
 </head>
-
 <body class="bg-slate-50 antialiased">
 <div class="container flex max-w-none flex-col">
     <jsp:include page="/includes/header.jsp"/>
@@ -34,60 +34,76 @@
 
                         <!-- IMAGE -->
                         <div id="image" class="columns-3xs gap-4">
-                            <figure v-for="image in images" class="py-2 [break-inside:avoid]">
-                                <div class="group relative overflow-hidden rounded-xl">
-                                    <img
-                                            class="object-cover object-center transition duration-200 group-hover:scale-110"
-                                            src="https://images.unsplash.com/photo-1675112632479-9e4a9839ee87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                                            alt=""
-                                    />
-                                    <div class="absolute inset-0 hidden px-4 py-3 group-hover:block">
-                                        <div class="flex justify-between">
-                                            <div class="flex flex-col text-white">
-                                                <p class="text-sm font-bold">Hoàng Thái Ninh</p>
-                                                <p class="text-xs">ninhht@uda.vn</p>
-                                            </div>
-                                            <div class="flex gap-x-2">
-                                                <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
-                                                    <lord-icon src="https://cdn.lordicon.com/ndppaqfb.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
-                                                </button>
-                                                <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
-                                                    <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
-                                                </button>
+                            <c:forEach items="${images}" var="image">
+                                <figure v-for="image in images" class="py-2 [break-inside:avoid]">
+                                    <div class="group relative overflow-hidden rounded-xl">
+                                        <img
+                                                class="object-cover object-center transition duration-200 group-hover:scale-110"
+                                                src="${image.filePath}"
+                                                alt="${image.title}"
+                                        />
+                                        <div class="absolute inset-0 hidden px-4 py-3 group-hover:block">
+                                            <div class="flex justify-between">
+                                                <div class="flex flex-col text-white">
+                                                    <p class="text-sm font-bold">${image.title}</p>
+                                                    <p class="text-xs">${image.user.username}</p>
+                                                </div>
+                                                <div class="flex gap-x-2">
+                                                    <c:url var="editLink" value="/admin">
+                                                        <c:param name="command" value="load"/>
+                                                        <c:param name="id" value="${image.id}"/>
+                                                    </c:url>
+                                                    <a href="${editLink}">
+                                                        <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
+                                                            <lord-icon src="https://cdn.lordicon.com/ndppaqfb.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                        </button>
+                                                    </a>
+                                                    <c:url var="deleteLink" value="/admin">
+                                                        <c:param name="command" value="delete"/>
+                                                        <c:param name="id" value="${image.id}"/>
+                                                    </c:url>
+                                                    <a href="${deleteLink}" onclick="if(!(confirm('Sure?'))) return false">
+                                                        <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
+                                                            <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                        </button>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </figure>
+                                </figure>
+                            </c:forEach>
                         </div>
                         <!-- IMAGE - END -->
                         <!-- ALBUM -->
                         <div id="album" class="columns-3xs gap-4">
-                            <figure v-for="image in images" class="py-2 [break-inside:avoid]">
-                                <div class="group relative overflow-hidden rounded-xl">
-                                    <img
-                                            class="object-cover object-center transition duration-200 group-hover:scale-110"
-                                            src="https://images.unsplash.com/photo-1675112632479-9e4a9839ee87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                                            alt=""
-                                    />
-                                    <div class="absolute inset-0 hidden px-4 py-3 group-hover:block">
-                                        <div class="flex justify-between">
-                                            <div class="flex flex-col text-white">
-                                                <p class="text-sm font-bold">ALBUM</p>
-                                                <p class="text-xs">ninhht@uda.vn</p>
-                                            </div>
-                                            <div class="flex gap-x-2">
-                                                <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
-                                                    <lord-icon src="https://cdn.lordicon.com/ndppaqfb.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
-                                                </button>
-                                                <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
-                                                    <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
-                                                </button>
+                            <c:forEach var="album" items="${albums}" varStatus="status">
+                                <figure v-for="image in images" class="py-2 [break-inside:avoid]">
+                                    <div class="group relative overflow-hidden rounded-xl">
+                                        <img
+                                                class="object-cover object-center transition duration-200 group-hover:scale-110"
+                                                src="${albumsCoverImages[status.index].filePath}"
+                                                alt="${album.title}"
+                                        />
+                                        <div class="absolute inset-0 hidden px-4 py-3 group-hover:block">
+                                            <div class="flex justify-between">
+                                                <div class="flex flex-col text-white">
+                                                    <p class="text-sm font-bold">${album.title}</p>
+                                                    <p class="text-xs">${album.user.username}</p>
+                                                </div>
+                                                <div class="flex gap-x-2">
+                                                    <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
+                                                        <lord-icon src="https://cdn.lordicon.com/ndppaqfb.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                    </button>
+                                                    <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
+                                                        <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </figure>
+                                </figure>
+                            </c:forEach>
                         </div>
                         <!-- ALBUM - END -->
                         <!-- USER -->
@@ -97,50 +113,52 @@
                                     <thead>
                                     <tr class="border-b bg-white font-semibold uppercase text-slate-700">
                                         <th class="px-4 py-3">Client</th>
-                                        <th class="px-4 py-3">Amount</th>
+                                        <th class="px-4 py-3">Location</th>
                                         <th class="px-4 py-3">Status</th>
                                         <th class="px-4 py-3">Date</th>
                                         <th class="px-4 py-3">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody class="divide-gray-200 bg-white">
-                                    <tr>
-                                        <td class="py-2">
-                                            <div class="flex items-center text-sm">
-                                                <div class="relative mr-3 h-8 w-8 rounded-full md:block">
-                                                    <img
-                                                            class="h-full w-full rounded-full object-cover"
-                                                            src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w="
-                                                    />
+                                    <c:forEach var="user" items="${users}">
+                                        <tr>
+                                            <td class="py-2">
+                                                <div class="flex items-center text-sm">
+                                                    <div class="relative mr-3 h-8 w-8 rounded-full md:block">
+                                                        <img
+                                                                class="h-full w-full rounded-full object-cover"
+                                                                src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w="
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <p class="truncate font-semibold">${user.username}</p>
+                                                        <p class="truncate text-xs text-gray-600">${user.email}</p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p class="truncate font-semibold">Hoàng Thái Ninh</p>
-                                                    <p class="truncate text-xs text-gray-600">ninhht@uda.vn</p>
+                                            </td>
+                                            <td class="py-2 text-right text-sm">
+                                                <div class="flex items-center justify-center">${user.location}</div>
+                                            </td>
+                                            <td class="py-2 text-sm">
+                                                <div class="flex items-center justify-center">
+                                                    <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-sm font-medium leading-5 text-indigo-600">Đang hoạt động</span>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="py-2 text-right text-sm">
-                                            <div class="flex items-center justify-center">$ 863.45</div>
-                                        </td>
-                                        <td class="py-2 text-sm">
-                                            <div class="flex items-center justify-center">
-                                                <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-sm font-medium leading-5 text-indigo-600">Đang hoạt động</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-2 text-sm">
-                                            <div class="flex items-center justify-center">24/11/2023</div>
-                                        </td>
-                                        <td class="py-2">
-                                            <div class="flex items-center justify-center space-x-4 text-sm">
-                                                <button type="submit" class="flex items-center text-slate-400 hover:text-slate-500">
-                                                    <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" class="h-6 w-6"> </lord-icon>
-                                                </button>
-                                                <button type="submit" class="flex items-center text-slate-400 hover:text-slate-500">
-                                                    <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" class="h-6 w-6"> </lord-icon>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td class="py-2 text-sm">
+                                                <div class="flex items-center justify-center">${user.created_at}</div>
+                                            </td>
+                                            <td class="py-2">
+                                                <div class="flex items-center justify-center space-x-4 text-sm">
+                                                    <button type="submit" class="flex items-center text-slate-400 hover:text-slate-500">
+                                                        <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+                                                    </button>
+                                                    <button type="submit" class="flex items-center text-slate-400 hover:text-slate-500">
+                                                        <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>

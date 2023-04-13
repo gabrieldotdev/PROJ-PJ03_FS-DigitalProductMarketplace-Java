@@ -35,13 +35,13 @@
 
     <servlet>
         <description/>
-        <display-name>Image</display-name>
-        <servlet-name>Image</servlet-name>
-        <servlet-class>com.digitalproductsweb.controller.ImageController</servlet-class>
+        <display-name>Admin</display-name>
+        <servlet-name>Admin</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.AdminController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Image</servlet-name>
-        <url-pattern>/admin/image-list</url-pattern>
+        <servlet-name>Admin</servlet-name>
+        <url-pattern>/admin</url-pattern>
     </servlet-mapping>
 
     <servlet>
