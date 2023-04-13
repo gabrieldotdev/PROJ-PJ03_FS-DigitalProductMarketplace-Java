@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
     <title>Giỏ hàng ảnh </title>
 </head>
 <body class="bg-slate-50 antialiased">

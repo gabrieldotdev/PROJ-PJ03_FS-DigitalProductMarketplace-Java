@@ -1,6 +1,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Show Sidebar Icon and Title
+        // $('#sidebar-icon').show();
+        $('#sidebar-home').hide();
+        $('#sidebar-about').hide();
+        $('#sidebar-admin').hide();
+
+        // Hide Sidebar by Default
+        $('#sidebar').addClass('hidden lg:block');
+
+        // Toggle Sidebar on Button Click
+        $('#sidebar-toggle').click(function () {
+            $('#sidebar').toggleClass('min-w-[16rem]');
+            $('#sidebar-home').toggle();
+            $('#sidebar-about').toggle();
+            $('#sidebar-admin').toggle();
+        });
+    });
+</script>
+
 <aside id="sidebar" class="mt-4 border-r border-slate-900/10 px-8 py-2">
     <!-- Sidebar content here -->
     <div class="h-full">

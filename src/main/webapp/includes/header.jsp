@@ -5,6 +5,13 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myDiscover').click(function () {
+            $('#myBox_Discover').toggleClass('hidden');
+        });
+    });
+</script>
 
 <%
     User user = (User) request.getSession().getAttribute("user");
@@ -20,8 +27,7 @@
                 <lord-icon src="https://cdn.lordicon.com/ofwpzftr.json" trigger="hover" class="h-6 w-6"></lord-icon>
             </button>
             <a class="text-md mr-3 flex-none font-bold leading-6 text-indigo-500 md:w-auto" href="<c:url value="/"/>">
-                Lil Wxs |
-                Blogs </a>
+                ART|GROUP</a>
             <!-- discoverDropdown -->
             <div class="relative">
                 <button id="myDiscover"
