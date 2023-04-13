@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+    <script src="<c:url value="https://cdn.tailwindcss.com"/>"></script>
+    <script src="<c:url value="https://cdn.lordicon.com/ritcuqlt.js"/>"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <title>Image Gallery</title>

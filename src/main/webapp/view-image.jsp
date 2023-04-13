@@ -17,7 +17,7 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
-    <title>Xem hình ảnh</title>
+    <title>Ảnh</title>
 </head>
 <body class="bg-slate-50 antialiased">
 <div class="container flex max-w-none flex-col">
@@ -78,6 +78,27 @@
                         </div>
 
                         <div class="w-[20rem] flex-none">
+                            <!-- User -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-x-4">
+                                    <span class="text-xl font-bold text-indigo-400">Ảnh</span>
+                                </div>
+                                <div class="flex gap-x-4">
+                                    <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" class="h-5 w-5"> </lord-icon>
+                                    <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" class="h-5 w-5"> </lord-icon>
+                                </div>
+                            </div>
+                            <!-- User - End -->
+                            <div class="my-4">
+                                <p class="text-md font-medium text-slate-600">Ảnh hình thù kị nhất nhất quả đất!(Tên Ảnh)</p>
+                            </div>
+
+                            <hr class="mb-4" />
+                            <!-- Gợi ý text -->
+                            <div class="mb-4 flex items-center gap-x-4">
+                                <p class="text-md font-medium text-indigo-400">Ảnh</p>
+                                <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">2</span>
+                            </div>
                             <!-- Gợi ý text -->
                             <div class="mb-4 flex items-center justify-between">
                                 <div class="flex items-center gap-x-2">
