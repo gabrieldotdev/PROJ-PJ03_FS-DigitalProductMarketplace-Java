@@ -1,6 +1,8 @@
+<%@ page import="com.digitalproductsweb.model.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,26 +71,33 @@
                             <div class="mb-4 flex items-center justify-between">
                                 <div class="flex items-center gap-x-2">
                                     <p class="text-md font-medium text-indigo-400">Ảnh</p>
-                                    <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">10</span>
+                                    <c:set var="imageCount" value="${fn:length(images)}"/>
+                                    <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">${imageCount}</span>
                                 </div>
                                 <div class="flex gap-x-2">
-                                    <p class="text-md font-medium text-slate-500">...</p>
+                                    <a href="<c:url value="/user/images"/>">
+                                        <p class="text-md font-medium text-slate-500">...</p>
+                                    </a>
                                 </div>
+
                             </div>
                             <!-- My Photo -->
                             <div class="columns-3 gap-2">
-                                <figure v-for="image in images" class="mb-2 [break-inside:avoid]">
-                                    <div class="group relative overflow-hidden rounded-xl">
-                                        <img
-                                                class="object-cover object-center transition duration-200 group-hover:scale-110"
-                                                src="https://plus.unsplash.com/premium_photo-1680721444847-33e37f1bd4d1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-                                                alt=""
-                                        />
-                                        <div class="absolute inset-0 hidden items-end justify-between px-4 py-3 group-hover:block">
-                                            <p class="text-sm text-white font-bold">Tên album hay tên ảnh gì đó</p>
+
+                                <c:forEach var="image" items="${images}">
+                                    <figure v-for="image in images" class="mb-2 [break-inside:avoid]">
+                                        <div class="group relative overflow-hidden rounded-xl">
+                                            <img
+                                                    class="object-cover object-center transition duration-200 group-hover:scale-110"
+                                                    src="${image.filePath}"
+                                                    alt="${image.title}"
+                                            />
+                                            <div class="absolute inset-0 hidden items-end justify-between px-4 py-3 group-hover:block">
+                                                <p class="text-sm text-white font-bold">${image.title}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </figure>
+                                    </figure>
+                                </c:forEach>
                             </div>
                         </section>
                     </div>
@@ -98,7 +107,8 @@
                         <div class="mb-4 flex  items-center justify-between">
                             <div class="flex items-center gap-x-2">
                                 <p class="text-md font-medium text-indigo-400">Bộ sưu tập</p>
-                                <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">4</span>
+                                <c:set var="albumCount" value="${fn:length(albums)}"/>
+                                <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">${albumCount}</span>
                             </div>
                             <div class="flex gap-x-2">
                                 <p class="text-md font-medium text-slate-500">...</p>
@@ -106,18 +116,20 @@
                         </div>
                         <!-- My Album -->
                         <div class="columns-3 gap-2">
-                            <figure v-for="image in images" class="mb-2 [break-inside:avoid]">
-                                <div class="group relative overflow-hidden rounded-xl">
-                                    <img
-                                            class="object-cover object-center transition duration-200 group-hover:scale-110"
-                                            src="https://plus.unsplash.com/premium_photo-1680721444847-33e37f1bd4d1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-                                            alt=""
-                                    />
-                                    <div class="absolute inset-0 hidden items-end justify-between px-4 py-3 group-hover:block">
-                                        <p class="text-sm text-white font-bold">Tên album hay tên ảnh gì đó</p>
+                            <c:forEach items="${albums}" var="album" varStatus="status">
+                                <figure v-for="image in images" class="mb-2 [break-inside:avoid]">
+                                    <div class="group relative overflow-hidden rounded-xl">
+                                        <img
+                                                class="object-cover object-center transition duration-200 group-hover:scale-110"
+                                                src="${albumCoverImages[status.index].filePath}"
+                                                alt="${album.title}"
+                                        />
+                                        <div class="absolute inset-0 hidden items-end justify-between px-4 py-3 group-hover:block">
+                                            <p class="text-sm text-white font-bold">${album.title}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </figure>
+                                </figure>
+                            </c:forEach>
                         </div>
                     </section>
                 </div>

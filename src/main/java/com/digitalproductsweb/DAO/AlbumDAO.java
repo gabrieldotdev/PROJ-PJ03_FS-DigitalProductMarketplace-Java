@@ -130,12 +130,30 @@ public class AlbumDAO {
         }
         return albumCoverImage;
     }
+    public List<Album> getAlbumsByUserId(int userId) {
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE user_id = ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Album album = mapResultSetToAlbum(rs);
+                    albums.add(album);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return albums;
+    }
 
 
     // Map a ResultSet to an Album object
     private Album mapResultSetToAlbum(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        User user = new User();
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserById(rs.getInt("user_id"));
         user.setId(rs.getInt("user_id"));
         String title = rs.getString("title");
         String description = rs.getString("description");

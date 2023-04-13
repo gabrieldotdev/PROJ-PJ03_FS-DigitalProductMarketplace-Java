@@ -90,12 +90,51 @@ public class PurchaseController extends HttpServlet {
                 purchaseAdd.setCreated_at(new Date(System.currentTimeMillis()));
                 if (Objects.equals(type, "image")) {
                     int imageId = Integer.parseInt(request.getParameter("imageId"));
-                    purchaseAdd.setImage(imageDAO.getImageById(imageId));
-                    purchaseAdd.setAlbum(null);
+                    // check image exists
+                    Image image = imageDAO.getImageById(imageId);
+                    if (image == null) {
+                        request.setAttribute("message", "Image not found");
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        response.sendRedirect("error");
+                        return;
+                    } else {
+                        // Check if image is already purchased
+                        List<Purchase> purchases = purchaseDAO.getPurchasesByUserId(user.getId());
+                        for (Purchase purchase : purchases) {
+                            if (purchase.getImage() != null && purchase.getImage().getId() == imageId) {
+                                // The image is already in a purchase, so we cannot add it again
+                                request.setAttribute("message", "Image already purchased");
+                                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                                response.sendRedirect("error");
+                                return;
+                            }
+                        }
+                        purchaseAdd.setImage(image);
+                        purchaseAdd.setAlbum(null);
+                    }
                 } else if (Objects.equals(type, "album")) {
                     int albumId = Integer.parseInt(request.getParameter("albumId"));
-                    purchaseAdd.setImage(null);
-                    purchaseAdd.setAlbum(albumDAO.getAlbumById(albumId));
+                    Album album = albumDAO.getAlbumById(albumId);
+                    if(album != null) {
+                        // Check if album is already purchased
+                        List<Purchase> purchases = purchaseDAO.getPurchasesByUserId(user.getId());
+                        for (Purchase purchase : purchases) {
+                            if (purchase.getAlbum() != null && purchase.getAlbum().getId() == albumId) {
+                                // The album is already in a purchase, so we cannot add it again
+                                request.setAttribute("message", "Album already purchased");
+                                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                                response.sendRedirect("error");
+                                return;
+                            }
+                        }
+                        purchaseAdd.setImage(null);
+                        purchaseAdd.setAlbum(album);
+                    } else {
+                        request.setAttribute("message", "Album not found");
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        response.sendRedirect("error");
+                        return;
+                    }
                 }
                 purchaseDAO.createPurchase(purchaseAdd);
                 response.sendRedirect(request.getContextPath() + "purchase");
@@ -108,7 +147,7 @@ public class PurchaseController extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                     response.sendRedirect(request.getContextPath() + "purchase");
                 } else {
-                    request.setAttribute("error", "Purchase not found");
+                    request.setAttribute("message", "Purchase not found");
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     response.sendRedirect("error.jsp");
                 }

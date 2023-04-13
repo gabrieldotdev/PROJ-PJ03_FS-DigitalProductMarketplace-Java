@@ -44,22 +44,20 @@
                                     <p class="text-2xl font-semibold">${image.title}</p>
                                 </div>
                                 <div class="flex gap-x-2 items-center">
-                                    <form method="post" action="${pageContext.request.contextPath}/Purchase">
-                                        <input type="hidden" name="action" value="ADD">
-                                        <input type="hidden" name="type" value="image">
-                                        <input type="hidden" name="imageId" value="${image.id}">
-                                        <button type="submit">Add to Cart</button>
-                                    </form>
-
                                     <p class="text-sm font-bold text-red-400" id="price">0</p>
                                     <button class="flex items-center rounded-full border p-2 shadow-xl">
                                         <lord-icon src="https://cdn.lordicon.com/pmegrqxm.json" trigger="hover"
                                                    class="h-5 w-5"></lord-icon>
                                     </button>
-                                    <button class="flex items-center rounded-full border p-2 shadow-xl">
-                                        <lord-icon src="https://cdn.lordicon.com/medpcfcy.json" trigger="hover"
-                                                   class="h-5 w-5"></lord-icon>
-                                    </button>
+                                    <form method="post" action="${pageContext.request.contextPath}/Purchase">
+                                        <input type="hidden" name="action" value="ADD">
+                                        <input type="hidden" name="type" value="image">
+                                        <input type="hidden" name="imageId" value="${image.id}">
+                                        <button type="submit" class="flex items-center rounded-full border p-2 shadow-xl">
+                                            <lord-icon src="https://cdn.lordicon.com/medpcfcy.json" trigger="hover"
+                                                       class="h-5 w-5"></lord-icon>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                             <div class="flex items-center justify-between">
@@ -97,15 +95,9 @@
                             </div>
                             <!-- User - End -->
                             <div class="my-4">
-                                <p class="text-md font-medium text-slate-600">Ảnh hình thù kị nhất nhất quả đất!(Tên Ảnh)</p>
+                                <p class="text-md font-medium text-slate-600">${image.title}</p>
                             </div>
 
-                            <hr class="mb-4" />
-                            <!-- Gợi ý text -->
-                            <div class="mb-4 flex items-center gap-x-4">
-                                <p class="text-md font-medium text-indigo-400">Ảnh</p>
-                                <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">2</span>
-                            </div>
                             <!-- Gợi ý text -->
                             <div class="mb-4 flex items-center justify-between">
                                 <div class="flex items-center gap-x-2">
