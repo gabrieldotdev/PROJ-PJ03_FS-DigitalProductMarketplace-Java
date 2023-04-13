@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 @WebServlet("/")
 public class HomeController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -51,7 +50,8 @@ public class HomeController extends HttpServlet {
             }
 
             request.setAttribute("images", filteredImages);
-            request.setAttribute("albums", albumCoverImages);
+            request.setAttribute("albums", albums);
+            request.setAttribute("albumsCoverImages", albumCoverImages);
             RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {

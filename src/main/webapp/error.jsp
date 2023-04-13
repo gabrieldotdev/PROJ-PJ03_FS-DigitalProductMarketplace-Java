@@ -6,6 +6,7 @@
     <title>Title</title>
 </head>
 <body>
+<<<<<<< Updated upstream
 <% if (request.getParameter("message") != null) { %>
 <p style="color: red;"><%= request.getParameter("error") %></p>
 <% } %>
@@ -29,5 +30,12 @@
         </div>
     </div>
 </div>
+=======
+<%--<h1>Trang lỗi</h1>--%>
+<h1>ERROR PAGE</h1>
+<c:if test="${not empty error}">
+    <div class="error">${error}</div>
+</c:if>
+>>>>>>> Stashed changes
 </body>
 </html>

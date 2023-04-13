@@ -9,6 +9,7 @@
 <body class="bg-slate-50 antialiased">
 <div class="container flex max-w-none flex-col">
     <jsp:include page="/includes/header.jsp"/>
+
     <main class="mb-6 flex h-full justify-center">
         <div class="mx-auto flex-1 overscroll-contain px-6">
             <div class="max-w-screen h-screen">
@@ -37,6 +38,7 @@
                                     <p>Không có mặt hàng nào trong giỏ hàng của bạn.</p>
                                 </c:when>
                                 <c:otherwise>
+                                    <c:set var="albumCoverIndex" value="0" />
                                     <c:forEach items="${purchases}" var="purchase" varStatus="status">
                                         <c:if test="${not empty purchase.image}">
                                             <figure v-for="image in images" class="py-2 [break-inside:avoid]">
@@ -61,21 +63,26 @@
                                                             </div>
                                                             <div class="flex gap-x-2">
                                                                 <a class="flex items-center rounded-full bg-white/20 p-2 absolute bottom-2 left-4"
-                                                                        href="<c:url value="/view/image?id=${purchase.image.id}"/>">
+                                                                   href="<c:url value="/view/image?id=${purchase.image.id}"/>">
                                                                     <lord-icon
                                                                             src="https://cdn.lordicon.com/dnmvmpfk.json"
                                                                             trigger="loop" colors="primary:#ffffff"
                                                                             class="h-5 w-5"></lord-icon>
                                                                 </a>
-
-                                                                <button class="flex items-center rounded-full bg-white/20 p-2 absolute bottom-2 left-16"
-                                                                        title="Delete">
-                                                                    <lord-icon
-                                                                            src="https://cdn.lordicon.com/kfzfxczd.json"
-                                                                            trigger="hover" colors="primary:#ffffff"
-                                                                            class="h-5 w-5"></lord-icon>
-                                                                </button>
-
+                                                                <form id="deleteForm" method="POST"
+                                                                      action="${pageContext.request.contextPath}/Purchase">
+                                                                    <input type="hidden" name="action" value="DELETE">
+                                                                    <input type="hidden" name="purchaseId"
+                                                                           value="${purchase.id}">
+                                                                    <button class="flex items-center rounded-full bg-white/20 p-2 absolute bottom-2 left-16"
+                                                                            title="Delete" type="submit"
+                                                                            onclick="return confirm('Bạn có chắc chắn muốn xoá?')">
+                                                                        <lord-icon
+                                                                                src="https://cdn.lordicon.com/kfzfxczd.json"
+                                                                                trigger="hover" colors="primary:#ffffff"
+                                                                                class="h-5 w-5"></lord-icon>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -87,7 +94,7 @@
                                                 <div class="group relative overflow-hidden rounded-xl">
                                                     <img
                                                             class="object-cover object-center transition duration-200 group-hover:scale-110"
-                                                            src="${albumCoverImages[status.index].getFilePath()}"
+                                                            src="${albumCoverImages[albumCoverIndex].getFilePath()}"
                                                             alt="${purchase.album.title}"
                                                     />
                                                     <div class="absolute bottom-2 right-4 z-10 flex items-center rounded-full bg-white/20 p-2 hover:bg-white/40"
@@ -112,19 +119,26 @@
                                                                             trigger="loop" colors="primary:#ffffff"
                                                                             class="h-5 w-5"></lord-icon>
                                                                 </a>
-                                                                <button class="flex items-center rounded-full bg-white/20 p-2 absolute bottom-2 left-16"
-                                                                        title="Delete">
-                                                                    <lord-icon
-                                                                            src="https://cdn.lordicon.com/kfzfxczd.json"
-                                                                            trigger="hover" colors="primary:#ffffff"
-                                                                            class="h-5 w-5"></lord-icon>
-                                                                </button>
-
+                                                                <form id="deletepuchaseForm" method="POST"
+                                                                      action="${pageContext.request.contextPath}/Purchase">
+                                                                    <input type="hidden" name="action" value="DELETE">
+                                                                    <input type="hidden" name="purchaseId"
+                                                                           value="${purchase.id}">
+                                                                    <button class="flex items-center rounded-full bg-white/20 p-2 absolute bottom-2 left-16"
+                                                                            title="Delete" type="submit"
+                                                                            onclick="return confirm('Bạn có chắc chắn muốn xoá?')">
+                                                                        <lord-icon
+                                                                                src="https://cdn.lordicon.com/kfzfxczd.json"
+                                                                                trigger="hover" colors="primary:#ffffff"
+                                                                                class="h-5 w-5"></lord-icon>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </figure>
+                                            <c:set var="albumCoverIndex" value="${albumCoverIndex + 1}" />
                                         </c:if>
                                     </c:forEach>
                                 </c:otherwise>

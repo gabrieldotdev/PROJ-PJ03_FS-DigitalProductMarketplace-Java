@@ -16,14 +16,23 @@ public class PurchaseDAO {
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, purchase.getUser().getId());
-            stmt.setInt(2, purchase.getImage().getId());
-            stmt.setInt(3, purchase.getAlbum().getId());
+            if (purchase.getImage() != null) {
+                stmt.setInt(2, purchase.getImage().getId());
+            } else {
+                stmt.setNull(2, java.sql.Types.INTEGER);
+            }
+            if (purchase.getAlbum() != null) {
+                stmt.setInt(3, purchase.getAlbum().getId());
+            } else {
+                stmt.setNull(3, java.sql.Types.INTEGER);
+            }
             stmt.setDate(4, new java.sql.Date(purchase.getCreated_at().getTime()));
             stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     // Retrieve a purchase by its ID
     public Purchase getPurchaseById(int id) {

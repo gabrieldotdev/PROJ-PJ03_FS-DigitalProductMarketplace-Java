@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/scrollreveal"></script>
     <title>Image Gallery</title>
 </head>
+
 <body class="bg-slate-50 antialiased">
 <div class="container flex max-w-none flex-col">
     <jsp:include page="/includes/header.jsp"/>

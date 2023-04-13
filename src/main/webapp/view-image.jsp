@@ -44,6 +44,13 @@
                                     <p class="text-2xl font-semibold">${image.title}</p>
                                 </div>
                                 <div class="flex gap-x-2 items-center">
+                                    <form method="post" action="${pageContext.request.contextPath}/Purchase">
+                                        <input type="hidden" name="action" value="ADD">
+                                        <input type="hidden" name="type" value="image">
+                                        <input type="hidden" name="imageId" value="${image.id}">
+                                        <button type="submit">Add to Cart</button>
+                                    </form>
+
                                     <p class="text-sm font-bold text-red-400" id="price">0</p>
                                     <button class="flex items-center rounded-full border p-2 shadow-xl">
                                         <lord-icon src="https://cdn.lordicon.com/pmegrqxm.json" trigger="hover"

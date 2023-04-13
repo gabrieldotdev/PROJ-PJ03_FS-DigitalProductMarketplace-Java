@@ -20,8 +20,8 @@ public class ImageDAO {
             stmt.setString(3, image.getFilePath());
             stmt.setString(4, image.getDescription());
             stmt.setDouble(5, image.getPrice());
-            stmt.setDate(6, new java.sql.Date(image.getCreatedAt().getTime()));
-            stmt.setDate(7, new java.sql.Date(image.getUpdatedAt().getTime()));
+            stmt.setDate(6, new Date(System.currentTimeMillis()));
+            stmt.setDate(7, new Date(System.currentTimeMillis()));
             stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -47,21 +47,34 @@ public class ImageDAO {
     }
 
     // Update an image's information
-    public void updateImage(Image image) {
-        String sql = "UPDATE images SET title = ?, file_path = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
+    public void updateImage(Image image, boolean updateFilePath) {
+        String sql;
+        if (updateFilePath) {
+            sql = "UPDATE images SET title = ?, file_path = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
+        } else {
+            sql = "UPDATE images SET title = ?, description = ?, price = ?, updated_at = ? WHERE id = ?";
+        }
         try (Connection con = ConnectDB.getInstance().openConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, image.getTitle());
-            stmt.setString(2, image.getFilePath());
-            stmt.setString(3, image.getDescription());
-            stmt.setDouble(4, image.getPrice());
-            stmt.setDate(5, new java.sql.Date(image.getUpdatedAt().getTime()));
-            stmt.setInt(6, image.getId());
+            if (updateFilePath) {
+                stmt.setString(2, image.getFilePath());
+                stmt.setString(3, image.getDescription());
+                stmt.setDouble(4, image.getPrice());
+                stmt.setDate(5, new Date(System.currentTimeMillis()));
+                stmt.setInt(6, image.getId());
+            } else {
+                stmt.setString(2, image.getDescription());
+                stmt.setDouble(3, image.getPrice());
+                stmt.setDate(4, new Date(System.currentTimeMillis()));
+                stmt.setInt(5, image.getId());
+            }
             stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     // Delete an image from the database
     public void deleteImage(int id) {

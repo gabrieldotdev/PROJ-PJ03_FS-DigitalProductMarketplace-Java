@@ -26,8 +26,13 @@
       <td>${image.price}</td>
       <td><img src="${image.filePath}" style="height: 50px"></td>
       <td>
-        <a href="images?action=edit&id=${image.id}">Edit</a>
-        <a href="images?action=delete&id=${image.id}">Delete</a>
+        <a href="<c:url value="/user/images?action=edit&id=${image.id}"/>">Edit</a>
+        <form method="post" action="<c:url value="/user/images"/>">
+          <input type="hidden" name="id" value="${image.id}" />
+          <input type="hidden" name="action" value="delete" />
+          <button type="submit">Delete</button>
+        </form>
+
       </td>
     </tr>
   </c:forEach>

@@ -15,11 +15,11 @@
         </div>
 
         <div class="grid grid-cols-7 gap-4">
-            <c:forEach items="${albums}" var="album">
+            <c:forEach items="${albums}" var="album" varStatus="status">
                 <a href="<c:url value="/view/album?albumId=${album.id}"/>">
                     <div class="group relative mb-2 block overflow-hidden rounded-xl bg-gray-100 lg:mb-3">
                         <img
-                                src="${album.filePath}"
+                                src="${albumsCoverImages[status.index].filePath}"
                                 class="3xl:h-full 3xl:w-full mb-3 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110 h-40"
                                 alt="${album.title}"
                         />

@@ -29,6 +29,7 @@
           <!-- Album -->
           <section class="flex justify-between gap-4 rounded-xl bg-white p-5">
 
+<<<<<<< Updated upstream
 
               <div class="inline-block flex-1">
                 <!-- Image -->
@@ -134,6 +135,22 @@
 <%--    <p>${image.title}</p>--%>
 <%--  </div>--%>
 <%--</c:forEach>--%>
+=======
+<h2>Images</h2>
+<c:forEach var="image" items="${images}">
+  <div>
+    <img src="${image.filePath}" height="100"/>
+    <p>${image.title}</p>
+    <p>${image.description}</p>
+  </div>
+</c:forEach>
+<form method="post" action="${pageContext.request.contextPath}/Purchase">
+  <input type="hidden" name="action" value="ADD">
+  <input type="hidden" name="type" value="album">
+  <input type="hidden" name="albumId" value="${album.id}">
+  <button type="submit">Add to Cart</button>
+</form>
+>>>>>>> Stashed changes
 </body>
 
 <%--<h1>${album.title}</h1>--%>

@@ -98,7 +98,7 @@ public class ImageController extends HttpServlet {
                 updatedAt
         );
 
-        imageDAO.updateImage(image);
+        imageDAO.updateImage(image, true);
         listImages(request, response);
     }
 
