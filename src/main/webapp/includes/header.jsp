@@ -85,18 +85,14 @@
                 </div>
             </div>
             <!-- searchBtn -->
-            <div
-                    id="myButton"
-                    class="ml-3 hidden cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium leading-5 text-slate-800 ring-1 ring-slate-900/10 backdrop-blur xl:flex"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="h-4 w-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
-                </svg>
-                <span class="ml-2">Tìm kiếm...</span>
-                <span class="ml-2 flex-none text-xs font-semibold">Ctrl K</span>
-            </div>
+            <a href="<c:url value="/search.jsp"/>">
+                <div class="flex items-center ml-3 hidden cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium leading-5 text-slate-800 ring-1 ring-slate-900/10 backdrop-blur xl:flex">
+                    <lord-icon src="https://cdn.lordicon.com/xfftupfv.json" trigger="hover" class="h-5 w-5">
+                    </lord-icon>
+                    <span class="ml-2">Tìm kiếm...</span>
+                    <span class="ml-2 flex-none text-xs font-semibold">Ctrl K</span>
+                </div>
+            </a>
             <!-- searchModel -->
 
             <!-- ... -->
@@ -165,11 +161,11 @@
 
             </div>
             <!-- MOBILE -->
-            <button type="button"
+            <a href="<c:url value="/search.jsp"/>"
                     class="-my-1 ml-auto flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600 lg:hidden">
                 <span class="sr-only">Search</span>
                 <lord-icon src="https://cdn.lordicon.com/xfftupfv.json" trigger="hover" class="h-6 w-6"></lord-icon>
-            </button>
+            </a>
             <div class="-my-1 ml-2 lg:hidden">
                 <button type="button"
                         class="flex h-8 w-8 items-center justify-center text-slate-500 hover:text-slate-600">
