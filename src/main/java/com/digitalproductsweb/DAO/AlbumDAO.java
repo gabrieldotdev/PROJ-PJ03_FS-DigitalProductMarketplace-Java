@@ -148,6 +148,25 @@ public class AlbumDAO {
         return albums;
     }
 
+    public List<Album> searchAlbumsByTitle(String searchTerm) {
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE title LIKE ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, "%" + searchTerm + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Album album = mapResultSetToAlbum(rs);
+                    albums.add(album);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return albums;
+    }
+
+
 
     // Map a ResultSet to an Album object
     private Album mapResultSetToAlbum(ResultSet rs) throws SQLException {

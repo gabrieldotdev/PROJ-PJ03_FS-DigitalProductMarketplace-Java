@@ -26,7 +26,7 @@
             });
         });
     </script>
-    <title>Tạo mới ảnh</title>
+    <title>Album Editor</title>
 </head>
 <body class="bg-slate-50 antialiased">
 <div class="container flex max-w-none flex-col">

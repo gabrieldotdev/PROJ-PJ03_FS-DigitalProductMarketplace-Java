@@ -11,6 +11,12 @@ public class AlbumImage {
         this.album_id = album_id;
         this.image_id = image_id;
     }
+
+    public AlbumImage(int album_id, int image_id) {
+        this.album_id = album_id;
+        this.image_id = image_id;
+    }
+
     public AlbumImage(){}
 
     public int getId() {

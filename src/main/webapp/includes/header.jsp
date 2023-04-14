@@ -117,16 +117,16 @@
                             </a>
                         </li>
                         <li>
-                            <a class="flex items-center gap-2 hover:text-indigo-500" href="#">
+                            <a class="flex items-center gap-2 hover:text-indigo-500" href="<c:url value="/admin"/>">
                                 <lord-icon src="https://cdn.lordicon.com/fsghhhtr.json" trigger="hover"
                                            class="h-6 w-6"></lord-icon>
-                                Blog
+                                Admin
                             </a>
                         </li>
                     </ul>
                 </nav>
-                <a href="#" class="ml-4 flex items-center text-slate-400 hover:text-slate-500">
-                    <lord-icon src="https://cdn.lordicon.com/psnhyobz.json" trigger="hover" class="h-6 w-6"></lord-icon>
+                <a href="<c:url value="/user/images?action=create"/>" class="ml-4 flex items-center text-slate-400 hover:text-slate-500">
+                    <lord-icon src="https://cdn.lordicon.com/wfadduyp.json" trigger="hover" class="h-6 w-6"></lord-icon>
                 </a>
                 <a href="<c:url value="/purchase"/>" class="mx-2 flex items-center text-slate-400 hover:text-slate-500">
                     <lord-icon src="https://cdn.lordicon.com/hyhnpiza.json" trigger="hover" class="h-6 w-6"></lord-icon>

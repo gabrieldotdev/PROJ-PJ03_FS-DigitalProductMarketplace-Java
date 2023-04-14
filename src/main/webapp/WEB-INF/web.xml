@@ -88,6 +88,17 @@
         <url-pattern>/user/images</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <description/>
+        <display-name>albumUserController</display-name>
+        <servlet-name>albumUserController</servlet-name>
+        <servlet-class>com.digitalproductsweb.controller.user.AlbumUserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>albumUserController</servlet-name>
+        <url-pattern>/user/album</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30

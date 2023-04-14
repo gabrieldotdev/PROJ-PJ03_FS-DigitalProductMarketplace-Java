@@ -1,6 +1,7 @@
 package com.digitalproductsweb.controller;
 
 import com.digitalproductsweb.DAO.AlbumDAO;
+import com.digitalproductsweb.DAO.AlbumImageDAO;
 import com.digitalproductsweb.DAO.ImageDAO;
 import com.digitalproductsweb.DAO.UserDAO;
 import com.digitalproductsweb.model.Album;
@@ -24,11 +25,13 @@ public class AdminController extends HttpServlet {
     private ImageDAO imageDAO;
     private AlbumDAO albumDAO;
     private UserDAO userDAO;
+    private AlbumImageDAO albumImageDAO;
 
     public void init() {
         imageDAO = new ImageDAO();
         albumDAO = new AlbumDAO();
         userDAO = new UserDAO();
+        albumImageDAO = new AlbumImageDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,6 +50,17 @@ public class AdminController extends HttpServlet {
                     break;
                 case "delete":
                     deleteImage(request, response);
+                    break;
+                case "deleteAlbum":
+                    deleteAlbum(request, response);
+                    break;
+                case "loadAlbum":
+                    getAlbumById(request, response);
+                    break;
+                case "deleteUser":
+                    int id = Integer.parseInt(request.getParameter("userId"));
+                    userDAO.deleteUser(id);
+                    listData(request, response);
                     break;
                 default:
                     listData(request, response);
@@ -128,6 +142,24 @@ public class AdminController extends HttpServlet {
         System.out.println(id);
         imageDAO.deleteImage(id);
         listData(request, response);
+    }
+
+    private void deleteAlbum(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("albumId"));
+        imageDAO.deleteImagesByAlbumId(id);
+        albumImageDAO.deleteAlbumImagesByAlbumId(id);
+        albumDAO.deleteAlbum(id);
+        listData(request, response);
+    }
+
+    private void getAlbumById(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("albumId"));
+        Album album = albumDAO.getAlbumById(id);
+        List<Image> images = imageDAO.getImagesByAlbumId(id);
+
+        request.setAttribute("album", album);
+        request.setAttribute("images", images);
+        request.getRequestDispatcher("/admin/album-edit.jsp").forward(request, response);
     }
 
 }

@@ -105,6 +105,25 @@ public class ImageDAO {
         return images;
     }
 
+    // Get a list images with query string
+    public List<Image> searchImagesByTitle(String title) {
+        List<Image> images = new ArrayList<>();
+        String sql = "SELECT i.*, u.username FROM images i INNER JOIN users u ON i.user_id = u.id WHERE i.title LIKE ?";
+        try (Connection con = ConnectDB.getInstance().openConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, "%" + title + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Image image = mapResultSetToImage(rs);
+                    images.add(image);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return images;
+    }
+
     // Delete all images with a given album
     public void deleteImagesByAlbumId(int albumId) {
         String sql = "DELETE FROM images WHERE id IN (SELECT image_id FROM album_images WHERE album_id = ?)";

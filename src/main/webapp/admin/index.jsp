@@ -15,7 +15,7 @@
     <main class="mb-6 flex h-full justify-center">
         <jsp:include page="/includes/sidebar.jsp"/>
         <div class="mx-auto flex-1 overscroll-contain px-6">
-            <div class="max-w-screen h-screen">
+            <div class="max-w-screen">
                 <!-- ADMIN -->
                 <div class="mt-6 max-w-full">
                     <!-- Main content here -->
@@ -55,7 +55,7 @@
                                                     </c:url>
                                                     <a href="${editLink}">
                                                         <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
-                                                            <lord-icon src="https://cdn.lordicon.com/ndppaqfb.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                            <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
                                                         </button>
                                                     </a>
                                                     <c:url var="deleteLink" value="/admin">
@@ -88,16 +88,28 @@
                                         <div class="absolute inset-0 hidden px-4 py-3 group-hover:block">
                                             <div class="flex justify-between">
                                                 <div class="flex flex-col text-white">
-                                                    <p class="text-sm font-bold">${album.title}</p>
+                                                    <a href="<c:url value="/view/album?albumId=${album.id}"/>"><p class="text-sm font-bold">${album.title}</p></a>
                                                     <p class="text-xs">${album.user.username}</p>
                                                 </div>
                                                 <div class="flex gap-x-2">
-                                                    <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
-                                                        <lord-icon src="https://cdn.lordicon.com/ndppaqfb.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
-                                                    </button>
-                                                    <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
-                                                        <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
-                                                    </button>
+                                                    <c:url var="editLink" value="/admin">
+                                                        <c:param name="command" value="loadAlbum"/>
+                                                        <c:param name="albumId" value="${album.id}"/>
+                                                    </c:url>
+                                                    <a href="${editLink}">
+                                                        <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
+                                                            <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                        </button>
+                                                    </a>
+                                                    <c:url var="deleteLink" value="/admin">
+                                                        <c:param name="command" value="deleteAlbum"/>
+                                                        <c:param name="albumId" value="${album.id}"/>
+                                                    </c:url>
+                                                    <a href="${deleteLink}" onclick="if(!(confirm('Sure?'))) return false">
+                                                        <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
+                                                            <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" colors="primary:#ffffff" class="h-5 w-5"> </lord-icon>
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,7 +143,7 @@
                                                         />
                                                     </div>
                                                     <div>
-                                                        <p class="truncate font-semibold">${user.username}</p>
+                                                        <a href="<c:url value="/profile?id=${user.id}"/>"><p class="truncate font-semibold">${user.username}</p></a>
                                                         <p class="truncate text-xs text-gray-600">${user.email}</p>
                                                     </div>
                                                 </div>
@@ -147,15 +159,21 @@
                                             <td class="py-2 text-sm">
                                                 <div class="flex items-center justify-center">${user.created_at}</div>
                                             </td>
-                                            <td class="py-2">
-                                                <div class="flex items-center justify-center space-x-4 text-sm">
-                                                    <button type="submit" class="flex items-center text-slate-400 hover:text-slate-500">
-                                                        <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+                                            <td class="py-2 flex justify-center">
+                                                <a href="<c:url value="/profile?id=${user.id}"/>">
+                                                    <button class="flex items-center rounded-full bg-white/20 p-2" title="Edit">
+                                                        <lord-icon src="https://cdn.lordicon.com/hbigeisx.json" trigger="hover" class="h-5 w-5"> </lord-icon>
                                                     </button>
-                                                    <button type="submit" class="flex items-center text-slate-400 hover:text-slate-500">
-                                                        <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+                                                </a>
+                                                <c:url var="deleteLink" value="/admin">
+                                                    <c:param name="command" value="deleteUser"/>
+                                                    <c:param name="userId" value="${user.id}"/>
+                                                </c:url>
+                                                <a href="${deleteLink}" onclick="if(!(confirm('Sure?'))) return false">
+                                                    <button class="flex items-center rounded-full bg-white/20 p-2" title="Delete">
+                                                        <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" class="h-5 w-5"> </lord-icon>
                                                     </button>
-                                                </div>
+                                                </a>
                                             </td>
                                         </tr>
                                     </c:forEach>

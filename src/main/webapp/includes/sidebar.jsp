@@ -12,6 +12,7 @@
         $('#sidebar-home').hide();
         $('#sidebar-about').hide();
         $('#sidebar-admin').hide();
+        $('#sidebar-create').hide();
 
         // Hide Sidebar by Default
         $('#sidebar').addClass('hidden lg:block');
@@ -22,6 +23,7 @@
             $('#sidebar-home').toggle();
             $('#sidebar-about').toggle();
             $('#sidebar-admin').toggle();
+            $('#sidebar-create').toggle();
         });
     });
 </script>
@@ -37,16 +39,23 @@
                 </a>
             </li>
             <li>
-                <a href="<c:url value="/"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
-                    <lord-icon src="https://cdn.lordicon.com/isugonwi.json" trigger="hover" class="h-6 w-6"> </lord-icon>
-                    <span id="sidebar-about" class="ml-4">Giới thiệu </span>
+                <a href="<c:url value="/purchase"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
+                    <lord-icon src="https://cdn.lordicon.com/hyhnpiza.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+                    <span id="sidebar-about" class="ml-4">Giả hàng</span>
                 </a>
             </li>
             <li>
-                <a href="<c:url value="/admin/index.jsp"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
+                <a href="<c:url value="/admin"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
                     <lord-icon src="https://cdn.lordicon.com/uiakkykh.json" trigger="hover" class="h-6 w-6"> </lord-icon>
 
-                    <span id="sidebar-admin" class="ml-4">Quản lý hệ thống </span>
+                    <span id="sidebar-admin" class="ml-4">Quản lý hệ thống</span>
+                </a>
+            </li>
+            <li>
+                <a href="<c:url value="/user/images?action=create"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
+                    <lord-icon src="https://cdn.lordicon.com/wfadduyp.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+
+                    <span id="sidebar-create" class="ml-4">Quản lý hệ thống</span>
                 </a>
             </li>
         </ul>
