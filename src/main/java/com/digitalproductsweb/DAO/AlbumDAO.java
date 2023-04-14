@@ -11,10 +11,10 @@ import com.digitalproductsweb.model.User;
 
 public class AlbumDAO {
     // Create a new album in the database
-    public void createAlbum(Album album) {
+    public int createAlbum(Album album) {
         String sql = "INSERT INTO albums (user_id, title, description, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConnectDB.getInstance().openConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
+             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, album.getUser().getId());
             stmt.setString(2, album.getTitle());
             stmt.setString(3, album.getDescription());
@@ -22,10 +22,19 @@ public class AlbumDAO {
             stmt.setDate(5, new java.sql.Date(album.getCreated_at().getTime()));
             stmt.setDate(6, new java.sql.Date(album.getUpdated_at().getTime()));
             stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int id = rs.getInt(1); // Retrieve the ID of the newly created album
+                return id;
+            } else {
+                throw new SQLException("Creating album failed, no ID obtained.");
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     // Retrieve an album by its ID
     public Album getAlbumById(int id) {

@@ -143,7 +143,7 @@
                                        class="h-6 w-6"></lord-icon>
                         </a>
                     </div>
-                    <form action="logout" method="POST">
+                    <form action="<c:url value="/logout"/>" method="POST" >
                         <button type="submit" class="flex items-center">
                             <lord-icon src="https://cdn.lordicon.com/bewubbww.json" trigger="hover"
                                        class="h-6 w-6"></lord-icon>

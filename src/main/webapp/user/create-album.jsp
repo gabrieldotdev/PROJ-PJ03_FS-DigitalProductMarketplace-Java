@@ -5,27 +5,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#file').on('change', function () {
-                var file = this.files[0];
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    $('#image').attr('src', event.target.result).removeClass('hidden');
-                    $('#file-choose').addClass('hidden');
-                    $('#delete-button').removeClass('hidden');
-                };
-                reader.readAsDataURL(file);
-            });
 
-            $('#delete-button').on('click', function () {
-                $('#image').attr('src', '').addClass('hidden');
-                $('#file').val('').removeClass('hidden');
-                $('#file-choose').removeClass('hidden');
-                $(this).addClass('hidden');
-            });
-        });
-    </script>
     <title>Tạo album mới</title>
 </head>
 <body class="bg-slate-50 antialiased">
@@ -38,49 +18,8 @@
                 <%-- CREATE-IMAGE--%>
                 <div class="mt-6 max-w-full">
                     <!-- Main PRODUCTS -->
-                    <form class="flex justify-between gap-4 rounded-xl bg-white p-5" method="POST" action="" enctype="multipart/form-data" >
+                    <form class="flex justify-between gap-4 rounded-xl bg-white p-5" method="POST" action="" >
                         <input type="hidden" name="action" value="create">
-                        <div class="relative inline-block flex-1">
-                            <button id="delete-button"
-                                    class="absolute right-4 top-4 flex hidden items-center rounded-full bg-white p-2">
-                                <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover"
-                                           class="h-5 w-5"></lord-icon>
-                            </button>
-                            <!-- Image -->
-                            <div id="image-container"
-                                 class="flex h-[30rem] items-center justify-center rounded-xl border">
-                                <!-- IMAGE -->
-                                <img id="image" src="" alt="hihi" class="hidden max-h-full max-w-full object-contain"/>
-                                <!-- IMAGE -End -->
-                                <!-- CHOOSE IMAGE -->
-                                <div id="file-choose"
-                                     class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pb-6 pt-5">
-                                    <div class="space-y-1 text-center">
-                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
-                                             viewBox="0 0 48 48" aria-hidden="true">
-                                            <path
-                                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"></path>
-                                        </svg>
-                                        <div class="flex text-sm text-gray-600">
-                                            <label
-                                                    htmlFor="image"
-                                                    class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
-                                            >
-                                                <span class="">Click để tải ảnh lên</span>
-                                                <input id="file" required type="file" class="sr-only" name="file" accept="image/*" required/>
-                                            </label>
-                                        </div>
-                                        <p class="text-xs text-gray-500">PNG, JPG up to 10MB</p>
-                                    </div>
-                                </div>
-                                <!-- CHOOSE IMAGE -END -->
-                            </div>
-                            <!-- Image - End -->
-                        </div>
-
                         <div class="w-[20rem] flex-none">
                             <p class="text-md mb-6 font-medium text-indigo-400">Chỉnh sửa nội dung</p>
                             <!-- TITLE text -->
@@ -122,6 +61,59 @@
                                 <!-- SUBMIT - End -->
                             </div>
                         </div>
+                        <section class="flex flex-col justify-between gap-4 rounded-xl bg-white p-5">
+                            <!-- Gợi ý text -->
+                            <div class="mb-4 flex items-center justify-between">
+                                <div class="flex items-center gap-x-2">
+                                    <p class="text-md font-medium text-indigo-400">Chọn ảnh</p>
+                                    <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">Check box</span>
+                                </div>
+                                <div class="flex gap-x-2">
+                                    <p class="text-md font-medium text-slate-500">...</p>
+                                </div>
+                            </div>
+                            <!-- Gợi ý text - End -->
+                            <div class="columns-3xs gap-2">
+                                <c:forEach var="image" items="${images}">
+                                    <figure v-for="image in images" class="mb-2 [break-inside:avoid]">
+                                        <div class="group relative overflow-hidden rounded-xl">
+                                            <img
+                                                    class="object-cover object-center transition duration-200 group-hover:scale-110"
+                                                    src="${image.filePath}"
+                                                    alt="${image.title}"
+                                            />
+                                            <div class="absolute bottom-2 right-4 z-10 flex items-center rounded-full bg-white/20 p-2 hover:bg-white/40"
+                                                 title="choose">
+                                                <input type="checkbox" id="${image.id}" value="${image.id}" name="selectedImageIds"
+                                                       class="h-4 w-4 rounded-full checked:accent-indigo-400"/>
+                                            </div>
+                                            <div class="absolute inset-0 hidden px-4 py-3 group-hover:block">
+                                                <div class="flex justify-between">
+                                                    <div class="flex flex-col text-white">
+                                                        <p class="text-sm font-bold">${image.title}</p>
+                                                        <p class="text-xs">${image.price} đ</p>
+                                                    </div>
+                                                    <div class="flex gap-x-2">
+                                                        <button class="flex items-center rounded-full bg-white/20 p-2"
+                                                                title="Edit">
+                                                            <lord-icon src="https://cdn.lordicon.com/dnmvmpfk.json"
+                                                                       trigger="loop" colors="primary:#ffffff"
+                                                                       class="h-5 w-5"></lord-icon>
+                                                        </button>
+                                                        <button class="flex items-center rounded-full bg-white/20 p-2"
+                                                                title="Delete">
+                                                            <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json"
+                                                                       trigger="hover" colors="primary:#ffffff"
+                                                                       class="h-5 w-5"></lord-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figure>
+                                </c:forEach>
+                            </div>
+                        </section>
                     </form>
                 </div>
             </div>

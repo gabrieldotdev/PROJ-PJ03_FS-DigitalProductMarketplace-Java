@@ -21,10 +21,7 @@ import com.cloudinary.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AlbumUserController extends HttpServlet {
 
@@ -52,6 +49,8 @@ public class AlbumUserController extends HttpServlet {
         action = action == null ? "" : action;
         switch (action) {
             case "create":
+                List<Image> images = imageDAO.getImagesByUserId(user.getId());
+                request.setAttribute("images", images);
                 RequestDispatcher createDispatcher = request.getRequestDispatcher("/user/create-album.jsp");
                 createDispatcher.forward(request, response);
                 break;
@@ -73,7 +72,7 @@ public class AlbumUserController extends HttpServlet {
                 }
 
                 request.setAttribute("album", album);
-                request.setAttribute("albumImages", albumImages);
+                request.setAttribute("images", albumImages);
                 RequestDispatcher editDispatcher = request.getRequestDispatcher("/user/edit-album.jsp");
                 editDispatcher.forward(request, response);
                 break;
@@ -112,34 +111,39 @@ public class AlbumUserController extends HttpServlet {
 
         switch (action) {
             case "create":
+                double price = 0;
                 String title = request.getParameter("title");
                 String description = request.getParameter("description");
-                double price = Double.parseDouble(request.getParameter("price"));
+                price = Double.parseDouble(request.getParameter("price"));
                 Date created_at = new Date(System.currentTimeMillis());
                 Date updated_at = new Date(System.currentTimeMillis());
-
-                String[] selectedImageIds = request.getParameterValues("selectedImages");
-                List<Image> selectedImages = new ArrayList<>();
-                if (selectedImageIds != null) {
-                    for (String id : selectedImageIds) {
-                        int imageId = Integer.parseInt(id);
-                        Image image = imageDAO.getImageById(imageId);
-                        selectedImages.add(image);
-                    }
-                }
-
                 Album album = new Album(user, title, description, price, created_at, updated_at);
-                albumDAO.createAlbum(album);
+                int albumIdNew = albumDAO.createAlbum(album);
+                album.setId(albumIdNew);
 
-                // Add the image to the album
-                for (Image image : selectedImages) {
-                    AlbumImage albumImage = new AlbumImage(album.getId(), image.getId());
-                    albumImageDAO.createAlbumImage(albumImage);
+                String[] selectedImageIdsString = request.getParameterValues("selectedImageIds");
+
+                if (selectedImageIdsString != null) {
+                    for(String imageId : selectedImageIdsString) {
+                        int id = Integer.parseInt(imageId);
+                        Image image = imageDAO.getImageById(id);
+                        System.out.println("ID" + id);
+                        System.out.println("Image" + image);
+                        System.out.println("Album" + album);
+                        AlbumImage albumImage = new AlbumImage(album.getId(), image.getId());
+                        albumImageDAO.createAlbumImage(albumImage);
+                    }
+                } else {
+                    response.sendRedirect("/user/albums?action=create");
+                    return;
                 }
+
+
                 response.sendRedirect("/user/albums");
                 break;
 
-            case "update":
+            case "edit":
+                System.out.println("LOADING UPDATE");
                 int id = Integer.parseInt(request.getParameter("id"));
                 Album updatedAlbum = albumDAO.getAlbumById(id);
                 if (updatedAlbum.getUser().getId() != user.getId()) {
@@ -150,6 +154,17 @@ public class AlbumUserController extends HttpServlet {
                 String updatedDescription = request.getParameter("description");
                 double updatedPrice = Double.parseDouble(request.getParameter("price"));
 
+                String[] selectedImageIds = request.getParameterValues("selectedImageIds");
+                System.out.println("selectedImageIds" + selectedImageIds);
+                if (selectedImageIds != null) {
+                        albumImageDAO.deleteAlbumImagesByAlbumId(updatedAlbum.getId());
+                    for(String imageId : selectedImageIds) {
+                        albumImageDAO.createAlbumImage(new AlbumImage(updatedAlbum.getId(), Integer.parseInt(imageId)));
+                    }
+                } else {
+                    response.sendRedirect("/user/albums");
+                    return;
+                }
                 updatedAlbum.setTitle(updatedTitle);
                 updatedAlbum.setDescription(updatedDescription);
                 updatedAlbum.setPrice(updatedPrice);
@@ -165,6 +180,7 @@ public class AlbumUserController extends HttpServlet {
                     response.sendRedirect("/user/albums");
                     return;
                 }
+                albumImageDAO.deleteAlbumImagesByAlbumId(albumToDelete.getId());
                 albumDAO.deleteAlbum(albumId);
                 response.sendRedirect("/user/albums");
                 break;
