@@ -13,6 +13,7 @@
         $('#sidebar-about').hide();
         $('#sidebar-admin').hide();
         $('#sidebar-create').hide();
+        $('#sidebar-album').hide();
 
         // Hide Sidebar by Default
         $('#sidebar').addClass('hidden lg:block');
@@ -24,6 +25,7 @@
             $('#sidebar-about').toggle();
             $('#sidebar-admin').toggle();
             $('#sidebar-create').toggle();
+            $('#sidebar-album').toggle();
         });
     });
 </script>
@@ -55,7 +57,13 @@
                 <a href="<c:url value="/user/images?action=create"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
                     <lord-icon src="https://cdn.lordicon.com/wfadduyp.json" trigger="hover" class="h-6 w-6"> </lord-icon>
 
-                    <span id="sidebar-create" class="ml-4">Quản lý hệ thống</span>
+                    <span id="sidebar-create" class="ml-4">Thêm ảnh mới</span>
+                </a>
+            </li>
+            <li>
+                <a href="<c:url value="/user/albums?action=create"/>" class="group mb-4 flex items-center font-semibold text-slate-800 hover:text-indigo-500 lg:text-sm lg:leading-6">
+                    <lord-icon src="https://cdn.lordicon.com/fpmskzsv.json" trigger="hover" class="h-6 w-6"> </lord-icon>
+                    <span id="sidebar-album" class="ml-4">Tạo album mới</span>
                 </a>
             </li>
         </ul>

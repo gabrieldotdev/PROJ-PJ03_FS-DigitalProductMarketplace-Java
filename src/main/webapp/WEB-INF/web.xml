@@ -96,7 +96,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>albumUserController</servlet-name>
-        <url-pattern>/user/album</url-pattern>
+        <url-pattern>/user/albums</url-pattern>
     </servlet-mapping>
 
     <session-config>

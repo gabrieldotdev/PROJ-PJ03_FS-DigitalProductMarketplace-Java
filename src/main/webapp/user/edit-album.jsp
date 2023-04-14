@@ -88,7 +88,7 @@
                                 <div class="flex cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium leading-5 text-slate-800 ring-1 ring-slate-900/10">
                                     <lord-icon src="https://cdn.lordicon.com/fsghhhtr.json" trigger="loop"
                                                class="h-6 w-6"></lord-icon>
-                                    <input type="text" class="ml-2 w-full outline-none" placeholder="title" id="title" name="title" required/>
+                                    <input type="text" class="ml-2 w-full outline-none" value="${album.title}" id="title" name="title" required/>
                                 </div>
                             </div>
                             <!-- TITLE - End -->
@@ -98,7 +98,7 @@
                                     <lord-icon src="https://cdn.lordicon.com/vufjamqa.json" trigger="loop"
                                                class="h-6 w-6"></lord-icon>
                                     <textarea type="text" class="ml-2 w-full outline-none" name="description"
-                                              id="description" rows="3" placeholder="Mô tả"></textarea>
+                                              id="description" rows="3" >${album.description}</textarea>
                                 </div>
                             </div>
                             <!-- DESCRIPTION - End -->
@@ -107,7 +107,7 @@
                                 <div class="flex cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium leading-5 text-slate-800 ring-1 ring-slate-900/10">
                                     <lord-icon src="https://cdn.lordicon.com/rzsdhkun.json" trigger="loop"
                                                class="h-6 w-6"></lord-icon>
-                                    <input type="number" class="ml-2 w-full outline-none" placeholder="price" id="price" name="price" step="0.01" min="0" required/>
+                                    <input type="number" class="ml-2 w-full outline-none" value="${album.price}" id="price" name="price" step="0.01" min="0" required/>
                                 </div>
                                 <!-- PRICE - End -->
                                 <!-- SUBMIT -->

@@ -111,7 +111,9 @@
                                 <span class="rounded-full bg-indigo-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-indigo-600">${albumCount}</span>
                             </div>
                             <div class="flex gap-x-2">
+                                <a href="<c:url value="/user/albums"/>">
                                 <p class="text-md font-medium text-slate-500">...</p>
+                                </a>
                             </div>
                         </div>
                         <!-- My Album -->

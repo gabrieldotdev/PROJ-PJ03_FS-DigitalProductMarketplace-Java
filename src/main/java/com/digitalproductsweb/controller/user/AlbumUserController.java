@@ -20,11 +20,12 @@ import com.cloudinary.*;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/user/albums")
 public class AlbumUserController extends HttpServlet {
 
     private AlbumDAO albumDAO;
@@ -62,15 +63,37 @@ public class AlbumUserController extends HttpServlet {
                     response.sendRedirect("/user/albums");
                     return;
                 }
-                request.setAttribute("album", album);
 
+                // get all images of the album
+                List<Image> albumImages = null;
+                try {
+                    albumImages = imageDAO.getImagesByAlbumId(album.getId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                request.setAttribute("album", album);
+                request.setAttribute("albumImages", albumImages);
                 RequestDispatcher editDispatcher = request.getRequestDispatcher("/user/edit-album.jsp");
                 editDispatcher.forward(request, response);
                 break;
 
             default:
                 List<Album> albums = albumDAO.getAlbumsByUserId(user.getId());
+
+                // Get ImageCoverAlbum by AlbumId
+                List<Image> albumCoverImages = new ArrayList<>();
+                for (Album albumItem : albums) {
+                    Image albumCoverImage = null;
+                    try {
+                        albumCoverImage = albumDAO.getAlbumCoverImage(albumItem.getId());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    albumCoverImages.add(albumCoverImage);
+                }
                 request.setAttribute("albums", albums);
+                request.setAttribute("albumCoverImages", albumCoverImages);
                 request.getRequestDispatcher("/user/albums.jsp").forward(request, response);
                 break;
         }
@@ -95,30 +118,23 @@ public class AlbumUserController extends HttpServlet {
                 Date created_at = new Date(System.currentTimeMillis());
                 Date updated_at = new Date(System.currentTimeMillis());
 
+                String[] selectedImageIds = request.getParameterValues("selectedImages");
+                List<Image> selectedImages = new ArrayList<>();
+                if (selectedImageIds != null) {
+                    for (String id : selectedImageIds) {
+                        int imageId = Integer.parseInt(id);
+                        Image image = imageDAO.getImageById(imageId);
+                        selectedImages.add(image);
+                    }
+                }
+
                 Album album = new Album(user, title, description, price, created_at, updated_at);
                 albumDAO.createAlbum(album);
-                // Get the array of uploaded files
-                Collection<Part> parts = request.getParts();
 
-                for (Part part : parts) {
-                    String titleImg = request.getParameter("title");
-                    String descriptionImg = request.getParameter("description");
-                    double priceImg = Double.parseDouble(request.getParameter("price"));
-
-                    // Upload photo to Cloudinary
-                    if (part != null && part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
-                        byte[] bytes = part.getInputStream().readAllBytes();
-                        Map uploadResult = cloudinary.uploader().uploadLarge(bytes, ObjectUtils.emptyMap());
-                        String filePath = uploadResult.get("url").toString();
-
-                        // Create a new image object and save it to the database
-                        Image image = new Image(user, titleImg, filePath, descriptionImg, priceImg);
-                        imageDAO.createImage(image);
-
-                        // Add the image to the album
-                        AlbumImage albumImage = new AlbumImage(album.getId(), image.getId());
-                        albumImageDAO.createAlbumImage(albumImage);
-                    }
+                // Add the image to the album
+                for (Image image : selectedImages) {
+                    AlbumImage albumImage = new AlbumImage(album.getId(), image.getId());
+                    albumImageDAO.createAlbumImage(albumImage);
                 }
                 response.sendRedirect("/user/albums");
                 break;
